@@ -22,6 +22,30 @@ The portable [27-row JSONL dataset](benchmarks/main/dataset.jsonl) includes mess
 expected answers, domain, mechanism, and provenance. The [main manifest](evals/main-matrix.json)
 controls selection. Release: `complex-main-v4`.
 
+## Example results
+
+The charts below show the October 1, 2026 GPT-6 comparison: 27 distinct tasks,
+three attempts per task, and 81 attempts per configuration. Click any image to
+view it at full resolution.
+
+### Observed accuracy
+
+<a href="assets/figure-06.png">
+  <img src="assets/figure-06.png" alt="Successful task attempts and strict passes across 17 GPT-6 model and reasoning-effort configurations, with 81 attempts per configuration." width="960">
+</a>
+
+Bars show task success; black markers show strict passes, including formatting
+requirements. The hatched segment identifies an ungraded API refusal.
+
+### Accuracy, latency, and cost
+
+<a href="assets/figure-09.png">
+  <img src="assets/figure-09.png" alt="GPT-6 task accuracy versus median latency, with bubble area representing mean estimated cost per attempt." width="960">
+</a>
+
+Bubble area represents mean estimated cost per attempt. Luna with no reasoning
+is omitted because cost is unavailable; the accuracy axis starts at 40%.
+
 ## Setup
 
 Requires Node.js 22.22 or newer and Python 3.10 or newer. Python grading and
@@ -62,6 +86,13 @@ npm run eval:report -- results/promptfoo-YOUR-RUN.json
 Exports are written to `results/`; Promptfoo stores its local database in
 `.promptfoo/`. Both are ignored by Git. Explicit `--env-file` takes precedence
 over an inherited key and imports only `OPENAI_API_KEY` from that file.
+
+<a href="assets/figure-05.png">
+  <img src="assets/figure-05.png" alt="Promptfoo results dashboard showing pass-rate charts, grading metrics, and a side-by-side comparison of GPT-6 Sol at low effort and Luna at maximum effort." width="960">
+</a>
+
+The Promptfoo viewer provides charts and per-case results for inspecting model
+outputs and grading metrics. Click the screenshot to view it at full resolution.
 
 ## Configure the matrix
 
@@ -143,6 +174,7 @@ npm run eval:report -- results/promptfoo-YOUR-RUN.json \
 
 ## Project layout
 
+- `assets/`: result charts and the Promptfoo dashboard screenshot.
 - `benchmarks/`: source packs, answer keys, dataset builders, and reference solvers.
 - `evals/`: Promptfoo configuration, model catalog, schemas, provider adapter, and graders.
 - `scripts/`: command launcher, decision report, and portable dataset builder.
