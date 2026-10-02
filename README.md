@@ -136,7 +136,9 @@ The launcher's preview reports the matrix before native CLI filters. Promptfoo's
 
 The primary pass condition is an exact, bare JSON answer with the required keys, types, array order, and values. Extra keys, prose, Markdown fences, malformed JSON, wrong values, integer fields spelled as decimals, and booleans used as numbers all fail. Decimal values are compared without floating-point tolerance.
 
-Named metrics include `strict_correctness`, `recoverable_correctness`, `format_only`, and `semantic_error`. A correct answer inside a single JSON code fence increases recoverable correctness but still fails the strict contract. Refusals and truncated responses cannot pass. Endpoint errors remain Promptfoo errors rather than incorrect answers. The raw response and assertion reason help distinguish these cases. No structured-output enforcement is enabled: following the requested JSON format is part of the benchmark.
+Named metrics include `strict_correctness`, `recoverable_correctness`, `format_only`, and `semantic_error`. A correct answer inside a single JSON code fence increases recoverable correctness but still fails the strict contract. Refusals and truncated responses cannot pass. Endpoint errors remain Promptfoo errors rather than incorrect answers. The raw response and assertion reason help distinguish these cases.
+
+Every evaluation request uses OpenAI Structured Outputs with a task-specific JSON Schema and `strict: true`. The schema constrains the response structure; deterministic Python graders separately check decision accuracy, evidence, feasibility, optimality, and task-specific output rules.
 
 Each live launch first recomputes the selected suites' answer keys using their independent deterministic solvers. A mismatch stops the run before any model call.
 
