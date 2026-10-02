@@ -1,0 +1,14 @@
+.env
+.env.*
+!.env.example
+*.plugin
+**/__pycache__/
+*.pyc
+**/.DS_Store
+.venv/
+vendor/
+.claude/
+results/
+node_modules/
+.promptfoo/
+.benchmark.local.json

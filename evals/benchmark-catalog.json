@@ -1,0 +1,1206 @@
+{
+  "version": "customer-golden-v1",
+  "as_of": "2026-09-28",
+  "profiles": {
+    "broad_enterprise": {
+      "name": "Broad enterprise customers",
+      "description": "Cross-industry finance, operational planning, policy application, and technical support."
+    },
+    "consulting": {
+      "name": "Consulting and professional services",
+      "description": "Engagement delivery, staffing, economics, diligence, finance, and contract interpretation."
+    },
+    "technical": {
+      "name": "Developer and technical platform teams",
+      "description": "Evidence-based API support, access control, incident diagnosis, deployment, and recovery."
+    }
+  },
+  "sources": {
+    "finance_workflows": {
+      "url": "https://openai.com/business/solutions/finance/",
+      "role": "Workflow relevance: finance analysis and forecasting; not a source for fictional numbers or accounting rules."
+    },
+    "finqa": {
+      "url": "https://aclanthology.org/2021.emnlp-main.300/",
+      "role": "Methodological inspiration: financial numerical reasoning with executable programs. No dataset questions copied."
+    },
+    "tatqa": {
+      "url": "https://aclanthology.org/2021.acl-long.254/",
+      "role": "Methodological inspiration: integrate structured records and textual rules. No dataset questions copied."
+    },
+    "enterprise_workflows": {
+      "url": "https://openai.com/business/frontier/",
+      "role": "Workflow relevance: financial forecasting, software engineering, procurement, and business operations. Does not validate these cases."
+    },
+    "reasoning_guidance": {
+      "url": "https://developers.openai.com/api/docs/guides/reasoning-best-practices",
+      "role": "Workflow relevance: reasoning across complex documents and explicit rules."
+    },
+    "engineering_workflows": {
+      "url": "https://cdn.openai.com/business-guides-and-resources/building-an-ai-native-engineering-team.pdf",
+      "role": "Workflow relevance: incident triage and log analysis. Fictional runbooks are not production guidance."
+    },
+    "expert_evaluation": {
+      "url": "https://openai.com/index/gdpval/",
+      "role": "Methodology: representative professional tasks and expert review. No claim of GDPval equivalence or expert review here."
+    },
+    "integer_optimization": {
+      "url": "https://developers.google.com/optimization/cp/cp_solver",
+      "role": "Design inspiration: explicit integer constraints, feasible versus optimal outcomes; no questions copied."
+    },
+    "nist_contingency": {
+      "url": "https://csrc.nist.gov/pubs/sp/800/34/r1/final",
+      "role": "Workflow relevance: recovery priorities, dependencies, plan validation; all recovery targets and backups are fictional."
+    },
+    "sre_canary": {
+      "url": "https://sre.google/workbook/canarying-releases/",
+      "role": "Workflow relevance: compare canary/control populations and apply release gates; fictional gates and telemetry."
+    },
+    "sre_slos": {
+      "url": "https://sre.google/workbook/implementing-slos/",
+      "role": "Workflow relevance: error budgets and explicit service objectives; not empirical validation of the case."
+    },
+    "event_sourcing": {
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/event-sourcing",
+      "role": "Workflow relevance: event replay, ordering, projections and compensating events; fictional event contract."
+    },
+    "transactional_outbox": {
+      "url": "https://docs.aws.amazon.com/prescriptive-guidance/latest/cloud-design-patterns/transactional-outbox.html",
+      "role": "Workflow relevance: duplicate delivery and idempotency; no AWS execution dependency."
+    },
+    "compensating_transactions": {
+      "url": "https://learn.microsoft.com/en-us/azure/architecture/patterns/compensating-transaction",
+      "role": "Design inspiration for an original fictional task; no questions copied or external validation claimed."
+    },
+    "distributed_cron": {
+      "url": "https://sre.google/sre-book/distributed-periodic-scheduling/",
+      "role": "Design inspiration for an original fictional task; no questions copied or external validation claimed."
+    },
+    "job_shop": {
+      "url": "https://developers.google.com/optimization/scheduling/job_shop",
+      "role": "Design inspiration for an original fictional task; no questions copied or external validation claimed."
+    },
+    "transaction_isolation": {
+      "url": "https://www.postgresql.org/docs/current/transaction-iso.html",
+      "role": "Design inspiration for an original fictional task; no questions copied or external validation claimed."
+    }
+  },
+  "cases": {
+    "decision/disruption_response": {
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "domain": "operations_planning",
+      "industries": [
+        "retail",
+        "manufacturing",
+        "logistics"
+      ],
+      "customer_roles": [
+        "operations_planner"
+      ],
+      "reasoning_skills": [
+        "source_precedence",
+        "time_indexed_optimization",
+        "inventory_constraints"
+      ],
+      "failure_mode": "Using unavailable inventory or choosing a feasible but suboptimal plan.",
+      "source_ids": [
+        "enterprise_workflows"
+      ],
+      "case_set": "core",
+      "family_id": "decision/disruption_response",
+      "base_case_id": "disruption_response",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "decision-matrix-v2",
+      "workflow": "Select a profitable fulfillment plan after a supplier delay while honoring reservations, quarantine, and shipment deadlines.",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_pending_human_review",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "5cb2042d4c38a6314a23a185214d40a52268091501feb5e78df9a8b6a5d070be"
+    },
+    "decision/diligence_reconciliation": {
+      "customer_profiles": [
+        "consulting"
+      ],
+      "domain": "financial_diligence",
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "diligence_analyst"
+      ],
+      "reasoning_skills": [
+        "multi_document_reconciliation",
+        "scope_and_units",
+        "circular_constraint",
+        "insufficient_evidence"
+      ],
+      "failure_mode": "Misapplying closing entries, caps, currencies, or approving without concentration evidence.",
+      "source_ids": [
+        "finance_workflows",
+        "expert_evaluation"
+      ],
+      "case_set": "core",
+      "family_id": "decision/diligence_reconciliation",
+      "base_case_id": "diligence_reconciliation",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "decision-matrix-v2",
+      "workflow": "Reconcile a target-company diligence pack and identify whether the financial test is enough to approve the transaction.",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_pending_human_review",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "3d96c6afd77d3674dbe9c48ce1b578831c45be9d1ffe680b95c58ad7960c3aa7"
+    },
+    "decision/incident_handoff": {
+      "customer_profiles": [
+        "technical"
+      ],
+      "domain": "incident_response",
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "site_reliability_engineer"
+      ],
+      "reasoning_skills": [
+        "clock_normalization",
+        "deduplication",
+        "negative_evidence",
+        "idempotency",
+        "uncertainty"
+      ],
+      "failure_mode": "Confusing vendor success with client success or selecting an unsafe mitigation.",
+      "source_ids": [
+        "engineering_workflows"
+      ],
+      "case_set": "core",
+      "family_id": "decision/incident_handoff",
+      "base_case_id": "incident_handoff",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "decision-matrix-v2",
+      "workflow": "Prepare an evidence-based incident handoff and safe mitigation from conflicting telemetry and incomplete payment outcomes.",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_pending_human_review",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "b38f9c5777487b89a67f438e8450d17b899850b3a320c7b2f59e23adb8f2914d"
+    },
+    "complex/sourcing_network": {
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "domain": "procurement",
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "Time-phased resilient procurement"
+      ],
+      "reasoning_skills": [
+        "source_authority",
+        "time_phased_inventory",
+        "fixed_charge_optimization",
+        "supplier_diversification"
+      ],
+      "failure_mode": "Choosing cheap but unapproved supplier bundles, ignoring signed arrival dates, or violating inventory, storage, or diversification constraints.",
+      "source_ids": [
+        "integer_optimization",
+        "enterprise_workflows"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/sourcing_network",
+      "base_case_id": "sourcing_network",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Time-phased resilient procurement",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "78c268725e025fbcbc2a66601164663d378be1cd66bec7ab4fd1e02f7b2f7496"
+    },
+    "complex/liquidity_facilities": {
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "domain": "liquidity",
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "Reconcile liquidity and choose financing"
+      ],
+      "reasoning_skills": [
+        "ledger_deduplication",
+        "currency_conversion",
+        "restricted_cash",
+        "financing_optimization"
+      ],
+      "failure_mode": "A lower signed revolver limit makes the bridge necessary, changing the finance cost.",
+      "source_ids": [
+        "finqa",
+        "tatqa"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/liquidity_facilities",
+      "base_case_id": "liquidity_facilities",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Reconcile liquidity and choose financing",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "fa48c3327e5c2dca0a83e2b6af12059c7b01e9d8ab88573a8f6ce49558fe4a62"
+    },
+    "complex/transformation_roadmap": {
+      "customer_profiles": [
+        "consulting"
+      ],
+      "domain": "transformation",
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "Choose a dependency-aware transformation portfolio"
+      ],
+      "reasoning_skills": [
+        "dependency_closure",
+        "overlap_elimination",
+        "discounting",
+        "resource_constraints"
+      ],
+      "failure_mode": "Withdrawing G approval changes the best portfolio rather than merely its formatting.",
+      "source_ids": [
+        "integer_optimization",
+        "finqa",
+        "expert_evaluation"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/transformation_roadmap",
+      "base_case_id": "transformation_roadmap",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Choose a dependency-aware transformation portfolio",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "2121de389f82f9d1d815f4bed9fa38a9697376aecc81a68d471f2c0fd96c9ab7"
+    },
+    "complex/engagement_capacity": {
+      "customer_profiles": [
+        "consulting"
+      ],
+      "domain": "engagement_delivery",
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "Staff a multi-week engagement under independence constraints"
+      ],
+      "reasoning_skills": [
+        "multi_period_assignment",
+        "capacity",
+        "independence",
+        "margin"
+      ],
+      "failure_mode": "Loss of the only independent non-client reviewer makes the whole engagement unstaffable.",
+      "source_ids": [
+        "integer_optimization",
+        "expert_evaluation"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/engagement_capacity",
+      "base_case_id": "engagement_capacity",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Staff a multi-week engagement under independence constraints",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "2b07bb40cfee927fe5d9b0d9807f8f76ec0e1f015617fce3e751247df23847f1"
+    },
+    "complex/recovery_chain": {
+      "customer_profiles": [
+        "technical"
+      ],
+      "domain": "disaster_recovery",
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "Choose a verified backup chain and recovery schedule"
+      ],
+      "reasoning_skills": [
+        "chain_validation",
+        "RPO_RTO",
+        "compatibility",
+        "resource_scheduling"
+      ],
+      "failure_mode": "Availability of K2 enables a faster valid recovery chain while slightly increasing RPO.",
+      "source_ids": [
+        "nist_contingency",
+        "integer_optimization"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/recovery_chain",
+      "base_case_id": "recovery_chain",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Choose a verified backup chain and recovery schedule",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "3ef6def3f14f457f52d4872e3c0532dccc879ae1cc057763b5483b849c140c7b"
+    },
+    "complex/canary_segment_analysis": {
+      "customer_profiles": [
+        "technical"
+      ],
+      "domain": "release_engineering",
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "Evaluate a canary under changing traffic mix"
+      ],
+      "reasoning_skills": [
+        "stratified_rates",
+        "revision_precedence",
+        "budget_projection",
+        "causal_uncertainty"
+      ],
+      "failure_mode": "A changed segment error count permits rollout after fixed-mix comparison and budget projection.",
+      "source_ids": [
+        "sre_canary",
+        "sre_slos"
+      ],
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "complex/canary_segment_analysis",
+      "base_case_id": "canary_segment_analysis",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "complex-decisions-v3",
+      "workflow": "Evaluate a canary under changing traffic mix",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Independent base workflow.",
+      "prompt_sha256": "90ba4c62161684f54296578d27e2accdaf23b19b09813f0d3bc9c00a378216cc"
+    },
+    "reasoning/production_jobshop": {
+      "domain": "operations_planning",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "operations_planner",
+        "production_scheduler"
+      ],
+      "reasoning_skills": [
+        "nonpreemptive_scheduling",
+        "release_dates",
+        "weighted_tardiness",
+        "global_optimization"
+      ],
+      "primary_reasoning_mechanism": "disjunctive_scheduling",
+      "source_ids": [
+        "job_shop"
+      ],
+      "failure_mode": "Treating each machine independently, overlapping maintenance, or minimizing makespan instead of weighted tardiness.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/production_jobshop",
+      "base_case_id": "production_jobshop",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Recover a two-stage production schedule",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "a3fb05dd9c6b79174741c190605dde2329aca2d38ee40989fdac45938347cbe4"
+    },
+    "reasoning/warehouse_queue": {
+      "domain": "operations_planning",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "operations_planner",
+        "production_scheduler"
+      ],
+      "reasoning_skills": [
+        "event_ordering",
+        "priority_queues",
+        "nonpreemptive_service",
+        "deadline_outcomes"
+      ],
+      "primary_reasoning_mechanism": "discrete_event_simulation",
+      "source_ids": [
+        "job_shop",
+        "enterprise_workflows"
+      ],
+      "failure_mode": "Blocking PACK behind a held order, starting work during a pause, or applying arrivals before completions incorrectly.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/warehouse_queue",
+      "base_case_id": "warehouse_queue",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Trace fulfillment queues through staffing interruptions",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "485cc07e5f19bc235f6ff65f5bc6c41298a9a232802830e914bc55032de954d8"
+    },
+    "reasoning/contingent_supplier": {
+      "domain": "procurement",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "procurement_manager",
+        "accounts_payable_analyst"
+      ],
+      "reasoning_skills": [
+        "scenario_analysis",
+        "correlated_failures",
+        "contingent_exercise",
+        "robust_optimization"
+      ],
+      "primary_reasoning_mechanism": "minimax_regret",
+      "source_ids": [
+        "integer_optimization"
+      ],
+      "failure_mode": "Optimizing the normal scenario or mean profit instead of worst regret against scenario-specific optimal pairs.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/contingent_supplier",
+      "base_case_id": "contingent_supplier",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Choose a contingent supply contract under correlated outages",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "bbb986ece5df609231a1c90ac6d92212bab23821f5d84fcc24cdb879ba19bc39"
+    },
+    "reasoning/invoice_match": {
+      "domain": "procurement",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "procurement_manager",
+        "accounts_payable_analyst"
+      ],
+      "reasoning_skills": [
+        "three_way_match",
+        "unit_conversion",
+        "credits",
+        "contract_precedence"
+      ],
+      "primary_reasoning_mechanism": "relational_reconciliation",
+      "source_ids": [
+        "tatqa"
+      ],
+      "failure_mode": "Double-counting receipts/credits, ignoring substitutions or returns, or paying a price-disputed line.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/invoice_match",
+      "base_case_id": "invoice_match",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Reconcile invoice lines against receipts and approved substitutions",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "8d719d874e193bd752e87d469d10230814d6f877a55db44fc43547491e91a4a7"
+    },
+    "reasoning/treasury_netting": {
+      "domain": "liquidity",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "treasury_analyst",
+        "finance_manager"
+      ],
+      "reasoning_skills": [
+        "netting_scope",
+        "currency_pools",
+        "settlement_graph",
+        "restricted_liquidity"
+      ],
+      "primary_reasoning_mechanism": "directed_cash_netting",
+      "source_ids": [
+        "finqa",
+        "tatqa"
+      ],
+      "failure_mode": "Netting across currencies or outside the agreement, treating restricted cash as free, or using receivables to offset gross obligations.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/treasury_netting",
+      "base_case_id": "treasury_netting",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Calculate legally permitted intercompany netting and settlement",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "e63d085c769a2f9fafef4fcefc8aa458ef7bf83c437e951bb506a662bac01e3e"
+    },
+    "reasoning/refinance_waterfall": {
+      "domain": "liquidity",
+      "customer_profiles": [
+        "broad_enterprise"
+      ],
+      "industries": [
+        "cross_industry"
+      ],
+      "customer_roles": [
+        "treasury_analyst",
+        "finance_manager"
+      ],
+      "reasoning_skills": [
+        "fixed_point",
+        "cash_waterfall",
+        "leverage_constraint",
+        "discrete_financing_choice"
+      ],
+      "primary_reasoning_mechanism": "piecewise_circular_financing",
+      "source_ids": [
+        "finqa"
+      ],
+      "failure_mode": "Ignoring capitalized fees, using uncapped earnings in the circular covenant, or choosing an unsigned quote.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/refinance_waterfall",
+      "base_case_id": "refinance_waterfall",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Solve a refinancing cash waterfall and leverage cap",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "6f82d9091bec6ee1de169c4cba5aa387dc8907648c1e11d7fd7c98ff7da3eb3c"
+    },
+    "reasoning/revenue_cohort_bridge": {
+      "domain": "financial_diligence",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "financial_diligence_analyst"
+      ],
+      "reasoning_skills": [
+        "cohort_membership",
+        "scope_changes",
+        "constant_currency",
+        "bridge_identity"
+      ],
+      "primary_reasoning_mechanism": "cohort_metric_reconstruction",
+      "source_ids": [
+        "finqa",
+        "tatqa"
+      ],
+      "failure_mode": "Counting acquired/reactivated customers as retained opening-cohort customers or mixing opening and closing FX.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/revenue_cohort_bridge",
+      "base_case_id": "revenue_cohort_bridge",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Build a constant-currency recurring-revenue cohort bridge",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "bb24e2da3d40164701bfe3b938e2f2e7f1f4f940f345eda5b6d8d37fd991c1af"
+    },
+    "reasoning/cash_earnings_quality": {
+      "domain": "financial_diligence",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "financial_diligence_analyst"
+      ],
+      "reasoning_skills": [
+        "noncash_adjustments",
+        "working_capital",
+        "reclassification",
+        "cash_conversion"
+      ],
+      "primary_reasoning_mechanism": "earnings_cash_bridge",
+      "source_ids": [
+        "finqa",
+        "tatqa"
+      ],
+      "failure_mode": "Adding noncash exceptions twice, removing unapproved cash expenses, or treating recurring maintenance as discretionary growth.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/cash_earnings_quality",
+      "base_case_id": "cash_earnings_quality",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Reconcile earnings to sustainable free cash flow",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "ce08fa4960f0f7246a1334b8d446c8ff686cb8cabc85ca9b5c48a7fb25d9b5b1"
+    },
+    "reasoning/rollout_impact_estimate": {
+      "domain": "transformation",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "transformation_lead",
+        "analytics_lead"
+      ],
+      "reasoning_skills": [
+        "standardization",
+        "difference_in_differences",
+        "sample_eligibility",
+        "causal_limits"
+      ],
+      "primary_reasoning_mechanism": "difference_in_differences",
+      "source_ids": [
+        "expert_evaluation",
+        "tatqa"
+      ],
+      "failure_mode": "Using mixed raw averages, omitting the control trend, or asserting causation without parallel-trends evidence.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/rollout_impact_estimate",
+      "base_case_id": "rollout_impact_estimate",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Estimate a rollout effect while separating mix and control changes",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "c7944dd0403ad1271491c60756b4b9d9535d213b4383a53d9983da7113c6e75a"
+    },
+    "reasoning/automation_routing": {
+      "domain": "transformation",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "transformation_lead",
+        "analytics_lead"
+      ],
+      "reasoning_skills": [
+        "confusion_matrix",
+        "conditional_rates",
+        "error_costs",
+        "quality_constraints"
+      ],
+      "primary_reasoning_mechanism": "expected_loss_routing",
+      "source_ids": [
+        "expert_evaluation",
+        "integer_optimization"
+      ],
+      "failure_mode": "Minimizing handling expense alone while violating review capacity, invalid-approval limits, or regulated routing.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/automation_routing",
+      "base_case_id": "automation_routing",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Select a human-review routing policy from calibrated error costs",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "6bf7301ebaf9b153d5160188aa3e62a5c731a0ab2dbc50fe68886973f9f052e6"
+    },
+    "reasoning/workpackage_assignment": {
+      "domain": "engagement_delivery",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "engagement_manager",
+        "resource_manager"
+      ],
+      "reasoning_skills": [
+        "capability_matching",
+        "aggregate_capacity",
+        "handoff_penalties",
+        "separation_of_duties"
+      ],
+      "primary_reasoning_mechanism": "assignment_with_pairwise_costs",
+      "source_ids": [
+        "integer_optimization"
+      ],
+      "failure_mode": "Ignoring confirmed reservations, reviewer independence, or multiple dependency handoff charges.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/workpackage_assignment",
+      "base_case_id": "workpackage_assignment",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Assign interdependent work packages with handoff costs",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "a93015ab2addac9448f9dc2fa926cb5d6dcc8f53fcc5ea7113633a9bbb811654"
+    },
+    "reasoning/engagement_rescue": {
+      "domain": "engagement_delivery",
+      "customer_profiles": [
+        "consulting"
+      ],
+      "industries": [
+        "consulting",
+        "professional_services"
+      ],
+      "customer_roles": [
+        "engagement_manager",
+        "resource_manager"
+      ],
+      "reasoning_skills": [
+        "sunk_costs",
+        "signed_scope",
+        "risk_adjusted_value",
+        "mutual_exclusion"
+      ],
+      "primary_reasoning_mechanism": "incremental_decision_analysis",
+      "source_ids": [
+        "finqa",
+        "expert_evaluation"
+      ],
+      "failure_mode": "Charging sunk spend again, selecting unsigned scope, overlooking incompatibility, or omitting the contingent bonus.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/engagement_rescue",
+      "base_case_id": "engagement_rescue",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Choose an engagement rescue plan using incremental economics",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "aa249ba5a3735b8957c8a2cd1eba931ea189517c7c76af1395896c943a42745c"
+    },
+    "reasoning/fault_hypothesis_constraints": {
+      "domain": "incident_response",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "incident_commander",
+        "reliability_engineer"
+      ],
+      "reasoning_skills": [
+        "logical_consistency",
+        "minimal_explanations",
+        "intervention_evidence",
+        "safe_containment"
+      ],
+      "primary_reasoning_mechanism": "constraint_based_diagnosis",
+      "source_ids": [
+        "sre_canary",
+        "engineering_workflows"
+      ],
+      "failure_mode": "Confusing possible faults with the intersection of minimum explanations or accepting unapproved containment.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/fault_hypothesis_constraints",
+      "base_case_id": "fault_hypothesis_constraints",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Identify minimal fault explanations and safe containment",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "17adc812389a208651c171bcb93cf78fdad5d22d8a96bc7068e2a084cce2f793"
+    },
+    "reasoning/lease_fencing_recovery": {
+      "domain": "incident_response",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "incident_commander",
+        "reliability_engineer"
+      ],
+      "reasoning_skills": [
+        "clock_offsets",
+        "lease_validity",
+        "fencing_tokens",
+        "quorum_evidence"
+      ],
+      "primary_reasoning_mechanism": "temporal_safety_invariants",
+      "source_ids": [
+        "distributed_cron",
+        "event_sourcing"
+      ],
+      "failure_mode": "Ignoring clock offsets or fence-before-write ordering, replaying beyond a sequence gap, or restarting before fencing installation.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/lease_fencing_recovery",
+      "base_case_id": "lease_fencing_recovery",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Determine safe recovery from overlapping leader leases",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "807bdc14a742d95c6fdbc9829220342668c226142fe602c858ad3a606093c779"
+    },
+    "reasoning/consistent_restore_cut": {
+      "domain": "disaster_recovery",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "recovery_coordinator",
+        "reliability_engineer"
+      ],
+      "reasoning_skills": [
+        "cross_store_atomicity",
+        "checkpoint_vectors",
+        "referential_integrity",
+        "recovery_frontier"
+      ],
+      "primary_reasoning_mechanism": "consistent_cut_search",
+      "source_ids": [
+        "transaction_isolation",
+        "nist_contingency"
+      ],
+      "failure_mode": "Choosing newest local checkpoints without atomic cross-store inclusion, reference consistency, or verified status.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/consistent_restore_cut",
+      "base_case_id": "consistent_restore_cut",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Find a transaction-consistent cut across independent archives",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "e2a9066693d0f3dc7824d54ea2cfef152e854da6b9bd1f6b7a391d92d143f858"
+    },
+    "reasoning/regional_failover": {
+      "domain": "disaster_recovery",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "recovery_coordinator",
+        "reliability_engineer"
+      ],
+      "reasoning_skills": [
+        "failure_domains",
+        "N_minus_one",
+        "latency_eligibility",
+        "capacity_cost_optimization"
+      ],
+      "primary_reasoning_mechanism": "robust_capacity_design",
+      "source_ids": [
+        "integer_optimization",
+        "nist_contingency"
+      ],
+      "failure_mode": "Assuming region labels imply independent failures, counting slow capacity, or satisfying only normal demand.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/regional_failover",
+      "base_case_id": "regional_failover",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Select regional capacity that survives a single fault domain",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "b94a54cbec10eaef90b49242456652f9b1fecb9136afa2697578ab394b05a3f0"
+    },
+    "reasoning/expand_contract_rollout": {
+      "domain": "release_engineering",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "release_engineer",
+        "platform_engineer"
+      ],
+      "reasoning_skills": [
+        "state_invariants",
+        "dependency_gates",
+        "irreversible_boundary",
+        "ordering_search"
+      ],
+      "primary_reasoning_mechanism": "state_transition_planning",
+      "source_ids": [
+        "event_sourcing",
+        "compensating_transactions"
+      ],
+      "failure_mode": "Checking only the final state rather than every transition prerequisite and prefix invariant.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/expand_contract_rollout",
+      "base_case_id": "expand_contract_rollout",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Sequence a schema migration with reversible and irreversible gates",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "f3d7bef7644bd722ff8d389929c8f61b085c676488f9ca0c7a85c148b5405347"
+    },
+    "reasoning/version_contract_resolution": {
+      "domain": "release_engineering",
+      "customer_profiles": [
+        "technical"
+      ],
+      "industries": [
+        "software_and_platforms"
+      ],
+      "customer_roles": [
+        "release_engineer",
+        "platform_engineer"
+      ],
+      "reasoning_skills": [
+        "dependency_resolution",
+        "feature_compatibility",
+        "version_ranges",
+        "cost_minimization"
+      ],
+      "primary_reasoning_mechanism": "finite_constraint_satisfaction",
+      "source_ids": [
+        "integer_optimization",
+        "engineering_workflows"
+      ],
+      "failure_mode": "Inferring capabilities from version numbers, missing authorization-generation gates, or choosing protocol-compatible but policy-ineligible versions.",
+      "evaluation_split": "development",
+      "case_set": "core",
+      "family_id": "reasoning/version_contract_resolution",
+      "base_case_id": "version_contract_resolution",
+      "variant_kind": "base",
+      "track": "decision",
+      "dataset_version": "unique-reasoning-v4.1",
+      "workflow": "Resolve a release bundle with dependency and capability constraints",
+      "provenance": "original_synthetic",
+      "review_status": "program_verified_not_expert_reviewed",
+      "difficulty_status": "design_estimate",
+      "industry_tag_basis": "intended_applicability_not_customer_provenance",
+      "collection": "decision",
+      "contrast_of": null,
+      "invariance_of": null,
+      "variant_rationale": "Distinct task with its own evidence and reasoning mechanism.",
+      "prompt_sha256": "8832555dec35699a96743a6c1c1bb098042db4a72cee5c9528daaf788c7671ff"
+    }
+  }
+}

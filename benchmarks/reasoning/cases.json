@@ -1,0 +1,2205 @@
+{
+  "version": 4,
+  "cases": [
+    {
+      "id": "production_jobshop",
+      "base_id": "production_jobshop",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Recover a two-stage production schedule",
+      "mechanism": "disjunctive_scheduling",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Each lot requires CUT then FINISH on separate single-capacity machines. Operations are nonpreemptive, integer start times >=0. CUT cannot begin before release; FINISH cannot begin before its own CUT completes. No two operations on the same machine overlap. A FINISH operation may not overlap the half-open maintenance window [6,8). Lateness is max(0,FINISH completion-due). Minimize total lateness*penalty per minute; then makespan; then CUT start tuple by lot ID, then FINISH start tuple by lot ID. All lots must be processed. Report starts/completions for each stage, late_minutes per lot, total_penalty_dollars and makespan_minutes."
+          }
+        },
+        {
+          "id": "LOTS",
+          "status": "verified",
+          "data": {
+            "lots": [
+              {
+                "id": "A",
+                "release": 0,
+                "cut": 3,
+                "finish": 4,
+                "due": 10,
+                "penalty": 20
+              },
+              {
+                "id": "B",
+                "release": 0,
+                "cut": 2,
+                "finish": 2,
+                "due": 7,
+                "penalty": 30
+              },
+              {
+                "id": "C",
+                "release": 2,
+                "cut": 4,
+                "finish": 3,
+                "due": 14,
+                "penalty": 10
+              },
+              {
+                "id": "D",
+                "release": 1,
+                "cut": 1,
+                "finish": 2,
+                "due": 9,
+                "penalty": 25
+              }
+            ]
+          }
+        },
+        {
+          "id": "MAINTENANCE",
+          "status": "approved",
+          "data": {
+            "machine": "FINISH",
+            "start": 6,
+            "end": 8
+          }
+        },
+        {
+          "id": "PLAN-DRAFT",
+          "status": "draft",
+          "data": {
+            "order": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ],
+            "maintenance_cancelled": true
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "cut_starts": "dictionary lot integer",
+        "finish_starts": "dictionary lot integer",
+        "finish_completions": "dictionary lot integer",
+        "late_minutes": "dictionary lot integer",
+        "total_penalty_dollars": "integer",
+        "makespan_minutes": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "production"
+    },
+    {
+      "id": "warehouse_queue",
+      "base_id": "warehouse_queue",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Trace fulfillment queues through staffing interruptions",
+      "mechanism": "discrete_event_simulation",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Orders require PICK then PACK, each on one worker. Nonpreemptive work retains its start-time worker until completion. An order is eligible for PICK after arrival; eligible for PACK after PICK completion and its hold_until. At each integer time: complete work; add arrivals/newly eligible orders; then start eligible work on idle workers. Choose earliest due time, ties ID. If a worker is paused, no new work may start, but existing work continues. PICK pause is [4,7); PACK pause is [8,10). Work finishing exactly at due is on time. Orders wait for pack holds without blocking the worker. Report pick_start, pack_start, delivered_at, late_order_ids and total_lateness_minutes."
+          }
+        },
+        {
+          "id": "ORDERS",
+          "status": "verified",
+          "data": {
+            "orders": [
+              {
+                "id": "A",
+                "arrival": 0,
+                "pick": 4,
+                "pack": 3,
+                "hold_until": 0,
+                "due": 10
+              },
+              {
+                "id": "B",
+                "arrival": 1,
+                "pick": 2,
+                "pack": 2,
+                "hold_until": 12,
+                "due": 9
+              },
+              {
+                "id": "C",
+                "arrival": 2,
+                "pick": 3,
+                "pack": 1,
+                "hold_until": 0,
+                "due": 13
+              },
+              {
+                "id": "D",
+                "arrival": 5,
+                "pick": 1,
+                "pack": 4,
+                "hold_until": 0,
+                "due": 14
+              },
+              {
+                "id": "E",
+                "arrival": 6,
+                "pick": 2,
+                "pack": 2,
+                "hold_until": 0,
+                "due": 18
+              }
+            ]
+          }
+        },
+        {
+          "id": "SHIFT",
+          "status": "approved",
+          "data": {
+            "PICK": [
+              [
+                4,
+                7
+              ]
+            ],
+            "PACK": [
+              [
+                8,
+                10
+              ]
+            ]
+          }
+        },
+        {
+          "id": "DISPATCH-DRAFT",
+          "status": "draft",
+          "data": {
+            "ignore_holds": true,
+            "priority": "arrival"
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "pick_start": "dictionary lot integer",
+        "pack_start": "dictionary lot integer",
+        "delivered_at": "dictionary lot integer",
+        "late_order_ids": [
+          "IDs"
+        ],
+        "total_lateness_minutes": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": null
+    },
+    {
+      "id": "contingent_supplier",
+      "base_id": "contingent_supplier",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Choose a contingent supply contract under correlated outages",
+      "mechanism": "minimax_regret",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Demand is 100 units, value $20 per unit delivered, no salvage. Select exactly two different supplier contracts and pay their fixed fees in every scenario. In each scenario choose how many units to exercise from each contracted supplier, integer units up to its available scenario capacity. Exercise cost is unit price; unmet units lose their value but have no extra penalty. Delivered units cannot exceed demand. Net value=20*delivered-unit purchase cost-fixed contract fees. For each scenario, benchmark is the best net value obtainable by selecting any two contracts before that scenario and optimizing exercise. Choose the contracted pair minimizing worst scenario regret (scenario benchmark minus pair net value); then maximize mean net value across the three equally weighted scenarios; then lexicographic supplier pair. Report chosen_ids, per_scenario_net_dollars, per_scenario_regret_dollars, worst_regret_dollars and mean_net_cents rounded half-up."
+          }
+        },
+        {
+          "id": "CONTRACTS",
+          "status": "verified",
+          "data": {
+            "suppliers": [
+              {
+                "id": "A",
+                "fee": 60,
+                "price": 8,
+                "capacity": {
+                  "normal": 80,
+                  "east_outage": 0,
+                  "port_delay": 80
+                }
+              },
+              {
+                "id": "B",
+                "fee": 100,
+                "price": 10,
+                "capacity": {
+                  "normal": 70,
+                  "east_outage": 70,
+                  "port_delay": 20
+                }
+              },
+              {
+                "id": "C",
+                "fee": 40,
+                "price": 12,
+                "capacity": {
+                  "normal": 60,
+                  "east_outage": 60,
+                  "port_delay": 60
+                }
+              },
+              {
+                "id": "D",
+                "fee": 140,
+                "price": 9,
+                "capacity": {
+                  "normal": 50,
+                  "east_outage": 50,
+                  "port_delay": 0
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "SCENARIOS",
+          "status": "verified",
+          "data": {
+            "demand": 100,
+            "value_per_unit": 20,
+            "names": [
+              "normal",
+              "east_outage",
+              "port_delay"
+            ]
+          }
+        },
+        {
+          "id": "RISK-DRAFT",
+          "status": "draft",
+          "data": {
+            "A_east_outage_capacity": 80
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "chosen_ids": [
+          "IDs"
+        ],
+        "per_scenario_net_dollars": "dictionary scenario integer",
+        "per_scenario_regret_dollars": "dictionary scenario integer",
+        "worst_regret_dollars": "integer",
+        "mean_net_cents": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "supplier"
+    },
+    {
+      "id": "invoice_match",
+      "base_id": "invoice_match",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Reconcile invoice lines against receipts and approved substitutions",
+      "mechanism": "relational_reconciliation",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Invoice each PO line separately. Received quantities come from unique posted receipt IDs, minus unique posted returns. Duplicate identical IDs are counted once. A signed substitution allows SKU Y receipts to count toward PO SKU X at two Y units per X equivalent. Ignore draft substitutions. Match quantities in X equivalents; do not move surplus across PO lines. First calculate quantity_matched_equivalents=min(net received equivalents, invoiced equivalents, ordered equivalents), independently of price validation. Report held_equivalents=max(0,invoiced equivalents-quantity_matched_equivalents): this field measures quantity shortfall only, not the units whose payment is blocked by a price dispute. Keep that same quantity shortfall even on a price-disputed line; do not set quantity_matched_equivalents to zero because the price is wrong. Separately, unit price must equal the signed PO price. A mismatching price gives reason price_dispute and payable_dollars=0 for the whole line. Otherwise gross payable is quantity_matched_equivalents times the signed PO price. Subtract already-posted credit amounts on that line once, floor at zero; repeated credit IDs are deduplicated. If price matches, reason is short_receipt when held_equivalents>0, otherwise matched. Return deduplicated_record_ids as the sorted distinct IDs that occurred more than once within the receipt rows, return rows, or credit rows; exclude IDs that appeared only once. Report payable_dollars, held_equivalents and reason per line, total_payable_dollars, and deduplicated_record_ids."
+          }
+        },
+        {
+          "id": "PO",
+          "status": "verified",
+          "data": {
+            "lines": [
+              {
+                "id": "P1",
+                "sku": "X",
+                "quantity": 10,
+                "unit_price": 100
+              },
+              {
+                "id": "P2",
+                "sku": "X",
+                "quantity": 8,
+                "unit_price": 120
+              },
+              {
+                "id": "P3",
+                "sku": "Z",
+                "quantity": 5,
+                "unit_price": 80
+              }
+            ]
+          }
+        },
+        {
+          "id": "RECEIPTS",
+          "status": "verified",
+          "data": {
+            "rows": [
+              {
+                "id": "R1",
+                "line": "P1",
+                "sku": "X",
+                "quantity": 6
+              },
+              {
+                "id": "R2",
+                "line": "P1",
+                "sku": "Y",
+                "quantity": 8
+              },
+              {
+                "id": "R2",
+                "line": "P1",
+                "sku": "Y",
+                "quantity": 8
+              },
+              {
+                "id": "R3",
+                "line": "P2",
+                "sku": "X",
+                "quantity": 8
+              },
+              {
+                "id": "R4",
+                "line": "P3",
+                "sku": "Z",
+                "quantity": 4
+              }
+            ],
+            "returns": [
+              {
+                "id": "T1",
+                "line": "P1",
+                "sku": "Y",
+                "quantity": 2
+              },
+              {
+                "id": "T2",
+                "line": "P2",
+                "sku": "X",
+                "quantity": 1
+              }
+            ]
+          }
+        },
+        {
+          "id": "SIGNED-SUBSTITUTION",
+          "status": "signed",
+          "data": {
+            "from": "Y",
+            "to": "X",
+            "numerator": 1,
+            "denominator": 2
+          }
+        },
+        {
+          "id": "INVOICES",
+          "status": "verified",
+          "data": {
+            "lines": [
+              {
+                "id": "P1",
+                "equivalents": 10,
+                "price": 100
+              },
+              {
+                "id": "P2",
+                "equivalents": 8,
+                "price": 125
+              },
+              {
+                "id": "P3",
+                "equivalents": 5,
+                "price": 80
+              }
+            ],
+            "credits": [
+              {
+                "id": "C1",
+                "line": "P1",
+                "amount": 50
+              },
+              {
+                "id": "C1",
+                "line": "P1",
+                "amount": 50
+              }
+            ]
+          }
+        },
+        {
+          "id": "SUBSTITUTION-DRAFT",
+          "status": "draft",
+          "data": {
+            "Y_per_X": 1
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "payable_dollars": "dictionary line integer",
+        "held_equivalents": "dictionary line integer",
+        "reasons": "dictionary line string",
+        "total_payable_dollars": "integer",
+        "deduplicated_record_ids": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": null
+    },
+    {
+      "id": "treasury_netting",
+      "base_id": "treasury_netting",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Calculate legally permitted intercompany netting and settlement",
+      "mechanism": "directed_cash_netting",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Only same-currency invoices whose payer and payee both belong to the signed netting pool may be netted. Eliminate identical duplicate invoice IDs; exclude void invoices. Positive pool position means net receivable; negative means payable. Process currencies in ascending currency-code order. Settle by ascending debtor ID then ascending creditor ID, each transfer min(debtor remaining, creditor remaining). Invoices outside a valid pool remain gross obligations. Compute each entity/currency funding requirement=max(0,net pool payable + gross outside-pool payable - freely available cash in that currency). Pool receivables are not available to fund outside obligations until settlement and therefore do not reduce funding needs. Cash must not be converted across currencies, restricted balances are excluded. Return positions keyed ENTITY:CURRENCY for pool members, ordered settlement IDs as PAYER>PAYEE:CURRENCY:AMOUNT, gross_obligation_ids, funding_dollars by entity/currency (amounts in currency units), total_external_usd_dollars using locked FX only for reporting."
+          }
+        },
+        {
+          "id": "NETTING-AGREEMENT",
+          "status": "signed",
+          "data": {
+            "pools": {
+              "USD": [
+                "A",
+                "B",
+                "C"
+              ],
+              "EUR": [
+                "A",
+                "B"
+              ]
+            },
+            "fx": {
+              "USD": [
+                1,
+                1
+              ],
+              "EUR": [
+                6,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "id": "INVOICES",
+          "status": "verified",
+          "data": {
+            "rows": [
+              {
+                "id": "I1",
+                "from": "A",
+                "to": "B",
+                "currency": "USD",
+                "amount": 100,
+                "state": "active"
+              },
+              {
+                "id": "I2",
+                "from": "B",
+                "to": "C",
+                "currency": "USD",
+                "amount": 70,
+                "state": "active"
+              },
+              {
+                "id": "I3",
+                "from": "C",
+                "to": "A",
+                "currency": "USD",
+                "amount": 40,
+                "state": "active"
+              },
+              {
+                "id": "I3",
+                "from": "C",
+                "to": "A",
+                "currency": "USD",
+                "amount": 40,
+                "state": "active"
+              },
+              {
+                "id": "I4",
+                "from": "A",
+                "to": "D",
+                "currency": "USD",
+                "amount": 30,
+                "state": "active"
+              },
+              {
+                "id": "I5",
+                "from": "A",
+                "to": "B",
+                "currency": "EUR",
+                "amount": 50,
+                "state": "active"
+              },
+              {
+                "id": "I6",
+                "from": "B",
+                "to": "A",
+                "currency": "EUR",
+                "amount": 20,
+                "state": "active"
+              },
+              {
+                "id": "I7",
+                "from": "C",
+                "to": "B",
+                "currency": "EUR",
+                "amount": 25,
+                "state": "active"
+              },
+              {
+                "id": "I8",
+                "from": "D",
+                "to": "A",
+                "currency": "USD",
+                "amount": 500,
+                "state": "void"
+              }
+            ]
+          }
+        },
+        {
+          "id": "CASH",
+          "status": "verified",
+          "data": {
+            "free": {
+              "A:USD": 45,
+              "B:USD": 10,
+              "C:USD": 0,
+              "D:USD": 0,
+              "A:EUR": 10,
+              "B:EUR": 5,
+              "C:EUR": 0
+            },
+            "restricted": {
+              "A:USD": 1000
+            }
+          }
+        },
+        {
+          "id": "POOL-DRAFT",
+          "status": "draft",
+          "data": {
+            "EUR": [
+              "A",
+              "B",
+              "C",
+              "D"
+            ]
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "positions": "dictionary entity currency integer",
+        "settlement_sequence": [
+          "ordered IDs"
+        ],
+        "gross_obligation_ids": [
+          "IDs"
+        ],
+        "funding_dollars": "dictionary entity currency integer",
+        "total_external_usd_dollars": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": null
+    },
+    {
+      "id": "refinance_waterfall",
+      "base_id": "refinance_waterfall",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Solve a refinancing cash waterfall and leverage cap",
+      "mechanism": "piecewise_circular_financing",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Choose one loan quote. Principal P is an integer multiple of $10,000 and at least enough to repay old debt. Loan fee = fixed_fee + fee_bps*P/10000; capitalized fee is included in reported gross debt D=P+fee. Available cash after closing = opening_free_cash + P - old_debt - closing_cost - fee. Distributable cash = cash minus minimum_cash, cannot be negative. New debt annual interest = interest_bps*D/10000, paid from annual operating cash. Leverage must satisfy D <= 3*(base_earnings + allowed_synergies), where allowed_synergies=min(proposed_synergies, (base_earnings+allowed_synergies)/5). Covenant uses the final capped earnings. Also interest cannot exceed annual_operating_cash. Maximize distributable cash under both gates; then minimize annual interest; then quote ID, then P. Ignore unsigned indicative quotes. Report loan_id, principal_dollars, fee_dollars, gross_debt_dollars, allowed_synergies_dollars, leverage_limit_dollars, annual_interest_dollars, distributable_cash_dollars. All data yield integral outputs."
+          }
+        },
+        {
+          "id": "CLOSING",
+          "status": "verified",
+          "data": {
+            "opening_free_cash": 30000,
+            "old_debt": 200000,
+            "closing_cost": 10000,
+            "minimum_cash": 20000,
+            "base_earnings": 100000,
+            "proposed_synergies": 50000,
+            "annual_operating_cash": 30000
+          }
+        },
+        {
+          "id": "QUOTES",
+          "status": "verified",
+          "data": {
+            "quotes": [
+              {
+                "id": "A",
+                "fixed_fee": 5000,
+                "fee_bps": 200,
+                "interest_bps": 800,
+                "signed": true
+              },
+              {
+                "id": "B",
+                "fixed_fee": 10000,
+                "fee_bps": 0,
+                "interest_bps": 600,
+                "signed": true
+              },
+              {
+                "id": "C",
+                "fixed_fee": 0,
+                "fee_bps": 0,
+                "interest_bps": 100,
+                "signed": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "INDICATIVE",
+          "status": "draft",
+          "data": {
+            "leverage_limit": 500000
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "loan_id": "ID",
+        "principal_dollars": "integer",
+        "fee_dollars": "integer",
+        "gross_debt_dollars": "integer",
+        "allowed_synergies_dollars": "integer",
+        "leverage_limit_dollars": "integer",
+        "annual_interest_dollars": "integer",
+        "distributable_cash_dollars": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "refinance"
+    },
+    {
+      "id": "revenue_cohort_bridge",
+      "base_id": "revenue_cohort_bridge",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Build a constant-currency recurring-revenue cohort bridge",
+      "mechanism": "cohort_metric_reconstruction",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Opening cohort consists of customers active at opening with positive opening annual recurring revenue (ARR), excluding acquired customers. For these same customers classify end ARR: churn if inactive at end, otherwise expansion or contraction relative to opening ARR, at fixed opening FX. A reactivated customer with zero opening ARR is new/reactivated, not retained opening cohort. Acquired end ARR is reported separately and excluded from organic bridge. Opening cohort ARR and end organic ARR use opening FX; end reported ARR uses closing FX. Net dollar retention bps=floor(end ARR of opening cohort / opening cohort ARR *10000). Gross retention excludes expansion (sum(min(opening,end) for opening cohort)/opening ARR) rounded down bps. Organic bridge must reconcile opening + expansion - contraction - churn + new/reactivated. FX effect is end total reported minus end total at opening FX. Use the signed customer-status register, not the sales draft."
+          }
+        },
+        {
+          "id": "CUSTOMERS",
+          "status": "signed",
+          "data": {
+            "rows": [
+              {
+                "id": "A",
+                "currency": "USD",
+                "opening": 100000,
+                "end": 130000,
+                "opening_active": true,
+                "end_active": true,
+                "acquired": false
+              },
+              {
+                "id": "B",
+                "currency": "EUR",
+                "opening": 80000,
+                "end": 60000,
+                "opening_active": true,
+                "end_active": true,
+                "acquired": false
+              },
+              {
+                "id": "C",
+                "currency": "USD",
+                "opening": 50000,
+                "end": 0,
+                "opening_active": true,
+                "end_active": false,
+                "acquired": false
+              },
+              {
+                "id": "D",
+                "currency": "EUR",
+                "opening": 0,
+                "end": 40000,
+                "opening_active": false,
+                "end_active": true,
+                "acquired": false
+              },
+              {
+                "id": "E",
+                "currency": "USD",
+                "opening": 0,
+                "end": 70000,
+                "opening_active": false,
+                "end_active": true,
+                "acquired": true
+              },
+              {
+                "id": "F",
+                "currency": "USD",
+                "opening": 0,
+                "end": 20000,
+                "opening_active": false,
+                "end_active": true,
+                "acquired": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "FX",
+          "status": "locked",
+          "data": {
+            "opening": {
+              "USD": [
+                1,
+                1
+              ],
+              "EUR": [
+                5,
+                4
+              ]
+            },
+            "closing": {
+              "USD": [
+                1,
+                1
+              ],
+              "EUR": [
+                6,
+                5
+              ]
+            }
+          }
+        },
+        {
+          "id": "SALES-DRAFT",
+          "status": "draft",
+          "data": {
+            "D_opening_active": true,
+            "E_organic": true
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "opening_cohort_dollars": "integer",
+        "expansion_dollars": "integer",
+        "contraction_dollars": "integer",
+        "churn_dollars": "integer",
+        "new_reactivated_dollars": "integer",
+        "end_organic_constant_dollars": "integer",
+        "acquired_constant_dollars": "integer",
+        "end_reported_dollars": "integer",
+        "fx_effect_dollars": "integer",
+        "net_retention_bps": "integer",
+        "gross_retention_bps": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": null
+    },
+    {
+      "id": "cash_earnings_quality",
+      "base_id": "cash_earnings_quality",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Reconcile earnings to sustainable free cash flow",
+      "mechanism": "earnings_cash_bridge",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Start with reported EBITDA. Approved exceptional expense addbacks raise adjusted EBITDA but do not automatically change cash. A cash-paid exceptional item remains in operating cash; exclude it from sustainable operating cash only by adding it back once. A noncash exceptional item is already added in the noncash bridge and must not be added again. Operating cash = reported EBITDA + noncash expense adjustments - cash_taxes - cash_interest - increase_AR - increase_inventory + increase_AP, with FX-only AR change removed from increase_AR. Capitalized recurring maintenance must be reclassified from reported growth_capex into maintenance_capex; total capex cash unchanged. Sustainable operating cash = operating cash + cash-paid approved exceptional addbacks. Sustainable FCF = sustainable operating cash - maintenance_capex after reclassification (growth capex excluded). Cash conversion bps = floor(sustainable FCF/adjusted EBITDA*10000). Recommend investigate if conversion below 6000 bps, otherwise acceptable; do not infer fraud from the calculation. Reported AR change includes the FX-only component."
+          }
+        },
+        {
+          "id": "EARNINGS",
+          "status": "verified",
+          "data": {
+            "reported_ebitda": 200000,
+            "exceptional": [
+              {
+                "id": "E1",
+                "amount": 30000,
+                "approved": true,
+                "cash_paid": true
+              },
+              {
+                "id": "E2",
+                "amount": 20000,
+                "approved": true,
+                "cash_paid": false
+              },
+              {
+                "id": "E3",
+                "amount": 50000,
+                "approved": false,
+                "cash_paid": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "CASH-BRIDGE",
+          "status": "verified",
+          "data": {
+            "noncash_expenses": 20000,
+            "cash_taxes": 15000,
+            "cash_interest": 10000,
+            "increase_AR_reported": 45000,
+            "AR_fx_only": 10000,
+            "increase_inventory": 20000,
+            "increase_AP": 25000,
+            "maintenance_capex": 30000,
+            "growth_capex": 40000,
+            "recurring_maintenance_in_growth": 15000
+          }
+        },
+        {
+          "id": "MEMO-DRAFT",
+          "status": "draft",
+          "data": {
+            "E3_approved": true,
+            "recommendation": "fraud"
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "adjusted_ebitda_dollars": "integer",
+        "operating_cash_dollars": "integer",
+        "sustainable_operating_cash_dollars": "integer",
+        "maintenance_capex_dollars": "integer",
+        "sustainable_fcf_dollars": "integer",
+        "cash_conversion_bps": "integer",
+        "recommendation": "acceptable or investigate",
+        "confirmed_fraud": "null",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "confirmed_fraud"
+      ],
+      "choice": null
+    },
+    {
+      "id": "rollout_impact_estimate",
+      "base_id": "rollout_impact_estimate",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Estimate a rollout effect while separating mix and control changes",
+      "mechanism": "difference_in_differences",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Outcome is completion minutes (lower is better). Standardize each treated/control group and pre/post period using fixed segment weights: small 1/4, large 3/4. Use sum duration/units within each cell; raw mixed averages are irrelevant. Improvement effect = (treated_pre-treated_post) - (control_pre-control_post). Report effect_minutes_cents rounded half-up once. Minimum cell sample is 20 units; insufficient cells require missing_evidence IDs GROUP:PERIOD:SEGMENT and decision insufficient. With adequate samples, recommend extend_trial if effect >=2 minutes, otherwise stop_trial. This is an observational difference-in-differences estimate. Parallel trends have not been independently checked: confirmed_causal_effect must be null and missing_assumptions must include parallel_trends, even if extend_trial is selected."
+          }
+        },
+        {
+          "id": "CELLS",
+          "status": "verified",
+          "data": {
+            "rows": [
+              {
+                "group": "T",
+                "period": "pre",
+                "segment": "small",
+                "units": 40,
+                "duration": 400
+              },
+              {
+                "group": "T",
+                "period": "pre",
+                "segment": "large",
+                "units": 20,
+                "duration": 400
+              },
+              {
+                "group": "T",
+                "period": "post",
+                "segment": "small",
+                "units": 20,
+                "duration": 140
+              },
+              {
+                "group": "T",
+                "period": "post",
+                "segment": "large",
+                "units": 60,
+                "duration": 900
+              },
+              {
+                "group": "C",
+                "period": "pre",
+                "segment": "small",
+                "units": 20,
+                "duration": 180
+              },
+              {
+                "group": "C",
+                "period": "pre",
+                "segment": "large",
+                "units": 40,
+                "duration": 720
+              },
+              {
+                "group": "C",
+                "period": "post",
+                "segment": "small",
+                "units": 60,
+                "duration": 480
+              },
+              {
+                "group": "C",
+                "period": "post",
+                "segment": "large",
+                "units": 20,
+                "duration": 340
+              }
+            ]
+          }
+        },
+        {
+          "id": "STUDY-PROTOCOL",
+          "status": "signed",
+          "data": {
+            "small_weight": [
+              1,
+              4
+            ],
+            "large_weight": [
+              3,
+              4
+            ],
+            "parallel_trends_verified": false
+          }
+        },
+        {
+          "id": "VENDOR-DRAFT",
+          "status": "draft",
+          "data": {
+            "causal_gain_minutes": 10
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "standardized_minutes_cents": "dictionary GROUP:PERIOD integer",
+        "effect_minutes_cents": "integer",
+        "decision": "extend_trial, stop_trial, insufficient",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "missing_assumptions": [
+          "IDs"
+        ],
+        "confirmed_causal_effect": "null",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "missing_evidence",
+        "missing_assumptions",
+        "confirmed_causal_effect"
+      ],
+      "choice": null
+    },
+    {
+      "id": "automation_routing",
+      "base_id": "automation_routing",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Select a human-review routing policy from calibrated error costs",
+      "mechanism": "expected_loss_routing",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Monthly population is the count in four mutually exclusive strata. Each policy routes an entire stratum either to automatic approval, automatic rejection, or human review. Review costs $5 per case and makes no classification errors. Auto approval/rejection costs $1 per case. Approving an invalid case costs an additional $100, rejecting a valid case costs an additional $20. Stratum true valid counts are supplied calibration facts for this controlled exercise. No policy may auto-approve the regulated stratum even if accuracy is high. Expected invalid approvals cannot exceed 5, and review volume cannot exceed 120. Select eligible policy minimizing total handling plus error costs; ties policy ID. Report policy_id, review_cases, invalid_approvals, valid_rejections, handling_cost_dollars, error_cost_dollars, total_cost_dollars, ineligible_policy_ids."
+          }
+        },
+        {
+          "id": "CALIBRATION",
+          "status": "verified",
+          "data": {
+            "strata": [
+              {
+                "id": "H",
+                "cases": 100,
+                "valid": 99,
+                "regulated": false
+              },
+              {
+                "id": "M",
+                "cases": 80,
+                "valid": 72,
+                "regulated": false
+              },
+              {
+                "id": "L",
+                "cases": 60,
+                "valid": 6,
+                "regulated": false
+              },
+              {
+                "id": "R",
+                "cases": 40,
+                "valid": 38,
+                "regulated": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "POLICIES",
+          "status": "verified",
+          "data": {
+            "policies": [
+              {
+                "id": "P1",
+                "routes": {
+                  "H": "approve",
+                  "M": "review",
+                  "L": "reject",
+                  "R": "review"
+                }
+              },
+              {
+                "id": "P2",
+                "routes": {
+                  "H": "approve",
+                  "M": "approve",
+                  "L": "reject",
+                  "R": "review"
+                }
+              },
+              {
+                "id": "P3",
+                "routes": {
+                  "H": "review",
+                  "M": "review",
+                  "L": "reject",
+                  "R": "review"
+                }
+              },
+              {
+                "id": "P4",
+                "routes": {
+                  "H": "approve",
+                  "M": "review",
+                  "L": "reject",
+                  "R": "approve"
+                }
+              },
+              {
+                "id": "P5",
+                "routes": {
+                  "H": "approve",
+                  "M": "reject",
+                  "L": "reject",
+                  "R": "review"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "ROI-DRAFT",
+          "status": "draft",
+          "data": {
+            "regulated_auto_approval_permitted": true,
+            "review_accuracy": "perfect_in_production"
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "policy_id": "ID",
+        "review_cases": "integer",
+        "invalid_approvals": "integer",
+        "valid_rejections": "integer",
+        "handling_cost_dollars": "integer",
+        "error_cost_dollars": "integer",
+        "total_cost_dollars": "integer",
+        "ineligible_policy_ids": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "automation"
+    },
+    {
+      "id": "workpackage_assignment",
+      "base_id": "workpackage_assignment",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Assign interdependent work packages with handoff costs",
+      "mechanism": "assignment_with_pairwise_costs",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Assign each work package indivisibly to one qualified consultant. Sum assigned hours per person cannot exceed available hours minus confirmed reservations. The reviewer V cannot be assigned to the same consultant as build B or analysis A and must be independent. Base labor cost is package hours*person rate. Every dependency edge incurs $500 handoff cost if its predecessor and successor have different assignees; no handoff cost when the same person performs both. Dependencies specify handoffs, not scheduling times. Minimize total labor plus handoff cost, then lexicographic assignee tuple by package ID A,B,C,V. Report assignments, hours_used, labor_cost_dollars, handoff_cost_dollars and total_cost_dollars."
+          }
+        },
+        {
+          "id": "PACKAGES",
+          "status": "verified",
+          "data": {
+            "packages": [
+              {
+                "id": "A",
+                "hours": 20,
+                "skill": "analysis",
+                "after": []
+              },
+              {
+                "id": "B",
+                "hours": 30,
+                "skill": "build",
+                "after": [
+                  "A"
+                ]
+              },
+              {
+                "id": "C",
+                "hours": 10,
+                "skill": "client",
+                "after": [
+                  "B"
+                ]
+              },
+              {
+                "id": "V",
+                "hours": 10,
+                "skill": "review",
+                "after": [
+                  "A",
+                  "B"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "PEOPLE",
+          "status": "verified",
+          "data": {
+            "people": [
+              {
+                "id": "J",
+                "rate": 90,
+                "available": 50,
+                "reserved": 0,
+                "skills": [
+                  "analysis",
+                  "build"
+                ],
+                "independent": false
+              },
+              {
+                "id": "K",
+                "rate": 100,
+                "available": 40,
+                "reserved": 10,
+                "skills": [
+                  "analysis",
+                  "client",
+                  "review"
+                ],
+                "independent": true
+              },
+              {
+                "id": "L",
+                "rate": 80,
+                "available": 40,
+                "reserved": 0,
+                "skills": [
+                  "build",
+                  "client"
+                ],
+                "independent": false
+              },
+              {
+                "id": "M",
+                "rate": 120,
+                "available": 30,
+                "reserved": 0,
+                "skills": [
+                  "analysis",
+                  "review"
+                ],
+                "independent": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "AVAILABILITY-DRAFT",
+          "status": "draft",
+          "data": {
+            "K_reserved": 0
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "assignments": "dictionary package ID",
+        "hours_used": "dictionary person integer",
+        "labor_cost_dollars": "integer",
+        "handoff_cost_dollars": "integer",
+        "total_cost_dollars": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "workpackage"
+    },
+    {
+      "id": "engagement_rescue",
+      "base_id": "engagement_rescue",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Choose an engagement rescue plan using incremental economics",
+      "mechanism": "incremental_decision_analysis",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Past spend is sunk and never charged again in incremental plan comparison. An unfinished mandatory milestone must be delivered by day 12; completion_day is base_day plus each selected option day_delta. Select a subset of signed options with no incompatible pair, total future cash spend <=cash_cap, and completion_day <=12. Future spend=base_future_cost+sum(option cost). Completion payout equals signed_remaining_fee + selected signed scope_fee + bonus if completion_day<=10, multiplied by supplied success probability for the exact subset. Subset success probability is min(10000,base_success_bps+sum(option success_delta_bps)). Expected incremental net cents = payout*probability_bps/10000 minus future spend, multiplied by100 and rounded half-up once. Maximize expected incremental net, ties smaller future spend then sorted option IDs. Report selected_ids, completion_day, success_bps, future_spend_dollars, expected_incremental_net_cents, historical_spend_dollars (for transparency only). Unsigned scope adds no fee and cannot be selected."
+          }
+        },
+        {
+          "id": "BASELINE",
+          "status": "verified",
+          "data": {
+            "past_spend": 40000,
+            "base_future_cost": 18000,
+            "base_day": 14,
+            "base_success_bps": 7000,
+            "signed_remaining_fee": 35000,
+            "bonus": 8000,
+            "cash_cap": 30000
+          }
+        },
+        {
+          "id": "OPTIONS",
+          "status": "verified",
+          "data": {
+            "options": [
+              {
+                "id": "A",
+                "cost": 5000,
+                "day_delta": -3,
+                "success_delta_bps": 1000,
+                "scope_fee": 0,
+                "signed": true,
+                "incompatible": [
+                  "B"
+                ]
+              },
+              {
+                "id": "B",
+                "cost": 7000,
+                "day_delta": -5,
+                "success_delta_bps": 500,
+                "scope_fee": 0,
+                "signed": true,
+                "incompatible": [
+                  "A"
+                ]
+              },
+              {
+                "id": "C",
+                "cost": 2000,
+                "day_delta": 0,
+                "success_delta_bps": 1500,
+                "scope_fee": 0,
+                "signed": true,
+                "incompatible": []
+              },
+              {
+                "id": "D",
+                "cost": 3000,
+                "day_delta": 1,
+                "success_delta_bps": 0,
+                "scope_fee": 9000,
+                "signed": true,
+                "incompatible": []
+              },
+              {
+                "id": "E",
+                "cost": 1000,
+                "day_delta": -6,
+                "success_delta_bps": 2000,
+                "scope_fee": 15000,
+                "signed": false,
+                "incompatible": []
+              }
+            ]
+          }
+        },
+        {
+          "id": "SALES-DRAFT",
+          "status": "draft",
+          "data": {
+            "remaining_fee": 60000,
+            "E_signed": true
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "selected_ids": [
+          "IDs"
+        ],
+        "completion_day": "integer",
+        "success_bps": "integer",
+        "future_spend_dollars": "integer",
+        "expected_incremental_net_cents": "integer",
+        "historical_spend_dollars": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "rescue"
+    },
+    {
+      "id": "fault_hypothesis_constraints",
+      "base_id": "fault_hypothesis_constraints",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Identify minimal fault explanations and safe containment",
+      "mechanism": "constraint_based_diagnosis",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Treat candidate component faults as Boolean. Each failed probe requires at least one faulty component on its path; each successful probe excludes every component on its path from being faulty. Probe status unknown imposes no constraint. Enumerate all consistent fault sets with minimum cardinality. confirmed_fault_ids contains faults present in EVERY minimum-cardinality explanation, not faults that occur only in some. A missing unknown probe must be named in missing_evidence regardless of whether other probes resolve the faults. Choose the lowest-cost approved containment action that covers every confirmed fault; do not grant credit for covering merely speculative faults. If no confirmed faults, action_id is null. Report minimal_explanations as dictionary E1,E2... ordered lexicographically by sorted fault-ID tuples, confirmed_fault_ids, action_id, action_cost_dollars and missing_evidence."
+          }
+        },
+        {
+          "id": "TOPOLOGY",
+          "status": "verified",
+          "data": {
+            "components": [
+              "A",
+              "B",
+              "C",
+              "D",
+              "E"
+            ]
+          }
+        },
+        {
+          "id": "PROBES",
+          "status": "verified",
+          "data": {
+            "probes": [
+              {
+                "id": "P1",
+                "path": [
+                  "A",
+                  "B"
+                ],
+                "status": "failed"
+              },
+              {
+                "id": "P2",
+                "path": [
+                  "B",
+                  "C"
+                ],
+                "status": "failed"
+              },
+              {
+                "id": "P3",
+                "path": [
+                  "C",
+                  "D"
+                ],
+                "status": "success"
+              },
+              {
+                "id": "P4",
+                "path": [
+                  "A",
+                  "E"
+                ],
+                "status": "failed"
+              },
+              {
+                "id": "P5",
+                "path": [
+                  "E"
+                ],
+                "status": "unknown"
+              }
+            ]
+          }
+        },
+        {
+          "id": "CONTAINMENT",
+          "status": "verified",
+          "data": {
+            "actions": [
+              {
+                "id": "M1",
+                "covers": [
+                  "A",
+                  "B"
+                ],
+                "cost": 100,
+                "approved": true
+              },
+              {
+                "id": "M2",
+                "covers": [
+                  "B"
+                ],
+                "cost": 40,
+                "approved": true
+              },
+              {
+                "id": "M3",
+                "covers": [
+                  "A",
+                  "B",
+                  "E"
+                ],
+                "cost": 120,
+                "approved": true
+              },
+              {
+                "id": "M4",
+                "covers": [
+                  "B"
+                ],
+                "cost": 0,
+                "approved": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "INCIDENT-DRAFT",
+          "status": "draft",
+          "data": {
+            "root_cause": "E"
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "minimal_explanations": "dictionary explanation sorted IDs",
+        "confirmed_fault_ids": [
+          "IDs"
+        ],
+        "action_id": "ID or null",
+        "action_cost_dollars": "integer or null",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "confirmed_fault_ids",
+        "missing_evidence"
+      ],
+      "choice": "faults"
+    },
+    {
+      "id": "lease_fencing_recovery",
+      "base_id": "lease_fencing_recovery",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Determine safe recovery from overlapping leader leases",
+      "mechanism": "temporal_safety_invariants",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Normalize local event time to coordinator time by subtracting the host offset. A write is valid only if its timestamp lies in that host lease half-open interval [start,end), its token equals the lease token, and token is >=the storage fence token active at that coordinator timestamp. Fence updates take effect at their normalized timestamp before writes at the same time. Duplicate write IDs are identical and counted once. A reported write cannot be counted as acknowledged unless valid and ack=true. Determine acknowledged IDs and rejected IDs. Determine largest safe replay sequence as the longest prefix 1..N of acknowledged sequence numbers with no gap; ack beyond a gap is not safe prefix. At recovery time 120, restart is permitted only if a signed quorum grant exists with token greater than ALL previously issued lease tokens and fencing-installed=true; otherwise decision wait_for_fence and missing_evidence lists fencing_installation when false. Report valid_ack_ids, rejected_ids, safe_replay_sequence, recovery_token, decision and missing_evidence."
+          }
+        },
+        {
+          "id": "LEASES",
+          "status": "verified",
+          "data": {
+            "offsets": {
+              "A": 5,
+              "B": -3,
+              "STORE": 2
+            },
+            "leases": [
+              {
+                "host": "A",
+                "start": 80,
+                "end": 110,
+                "token": 7
+              },
+              {
+                "host": "B",
+                "start": 100,
+                "end": 125,
+                "token": 8
+              }
+            ]
+          }
+        },
+        {
+          "id": "EVENTS",
+          "status": "verified",
+          "data": {
+            "fences": [
+              {
+                "host": "STORE",
+                "local_time": 104,
+                "token": 8
+              }
+            ],
+            "writes": [
+              {
+                "id": "W1",
+                "host": "A",
+                "local_time": 95,
+                "token": 7,
+                "seq": 1,
+                "ack": true
+              },
+              {
+                "id": "W2",
+                "host": "A",
+                "local_time": 107,
+                "token": 7,
+                "seq": 2,
+                "ack": true
+              },
+              {
+                "id": "W3",
+                "host": "B",
+                "local_time": 100,
+                "token": 8,
+                "seq": 3,
+                "ack": true
+              },
+              {
+                "id": "W4",
+                "host": "B",
+                "local_time": 121,
+                "token": 8,
+                "seq": 4,
+                "ack": true
+              },
+              {
+                "id": "W4",
+                "host": "B",
+                "local_time": 121,
+                "token": 8,
+                "seq": 4,
+                "ack": true
+              },
+              {
+                "id": "W5",
+                "host": "A",
+                "local_time": 120,
+                "token": 7,
+                "seq": 5,
+                "ack": true
+              }
+            ],
+            "initial_fence": 7
+          }
+        },
+        {
+          "id": "RECOVERY-GRANT",
+          "status": "signed",
+          "data": {
+            "token": 9,
+            "quorum": true,
+            "fencing_installed": false
+          }
+        },
+        {
+          "id": "STATUS-DRAFT",
+          "status": "draft",
+          "data": {
+            "fencing_installed": true,
+            "safe_sequence": 4
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "valid_ack_ids": [
+          "IDs"
+        ],
+        "rejected_ids": [
+          "IDs"
+        ],
+        "safe_replay_sequence": "integer",
+        "recovery_token": "integer",
+        "decision": "restart or wait_for_fence",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "missing_evidence"
+      ],
+      "choice": "lease"
+    },
+    {
+      "id": "consistent_restore_cut",
+      "base_id": "consistent_restore_cut",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Find a transaction-consistent cut across independent archives",
+      "mechanism": "consistent_cut_search",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Choose one checkpoint from each store ORDERS and PAYMENTS. A checkpoint includes every transaction with that store local commit sequence <=its checkpoint sequence. A multi-store transaction must be included in ALL its listed stores or NONE. A payment referencing an order requires the referenced order transaction to be included. Checkpoints must be verified. Recoverable coordinator time is min(chosen checkpoint coordinator_time); incident is time100, RPO=100-recoverable_time. Require RPO<=30. Maximize recoverable time, then sum of chosen sequences, then checkpoint IDs ordered ORDERS,PAYMENTS. Report checkpoint_ids as dictionary store ID, included_transaction_ids, recoverable_time, rpo_minutes and reconstructed_balance_dollars. Balance is opening 100 plus each included payment transaction amount; order-only transactions change no balance."
+          }
+        },
+        {
+          "id": "CHECKPOINTS",
+          "status": "verified",
+          "data": {
+            "ORDERS": [
+              {
+                "id": "O1",
+                "sequence": 2,
+                "coordinator_time": 75,
+                "verified": true
+              },
+              {
+                "id": "O2",
+                "sequence": 4,
+                "coordinator_time": 95,
+                "verified": true
+              },
+              {
+                "id": "O3",
+                "sequence": 5,
+                "coordinator_time": 99,
+                "verified": false
+              }
+            ],
+            "PAYMENTS": [
+              {
+                "id": "P1",
+                "sequence": 1,
+                "coordinator_time": 72,
+                "verified": true
+              },
+              {
+                "id": "P2",
+                "sequence": 3,
+                "coordinator_time": 94,
+                "verified": true
+              },
+              {
+                "id": "P3",
+                "sequence": 4,
+                "coordinator_time": 98,
+                "verified": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "TRANSACTIONS",
+          "status": "verified",
+          "data": {
+            "transactions": [
+              {
+                "id": "T1",
+                "sequences": {
+                  "ORDERS": 1
+                },
+                "amount": 0,
+                "requires_order": null
+              },
+              {
+                "id": "T2",
+                "sequences": {
+                  "ORDERS": 2,
+                  "PAYMENTS": 1
+                },
+                "amount": 30,
+                "requires_order": "T1"
+              },
+              {
+                "id": "T3",
+                "sequences": {
+                  "ORDERS": 3
+                },
+                "amount": 0,
+                "requires_order": null
+              },
+              {
+                "id": "T4",
+                "sequences": {
+                  "ORDERS": 4,
+                  "PAYMENTS": 2
+                },
+                "amount": -20,
+                "requires_order": "T3"
+              },
+              {
+                "id": "T5",
+                "sequences": {
+                  "PAYMENTS": 3
+                },
+                "amount": 10,
+                "requires_order": "T3"
+              },
+              {
+                "id": "T6",
+                "sequences": {
+                  "ORDERS": 5,
+                  "PAYMENTS": 4
+                },
+                "amount": 50,
+                "requires_order": "T1"
+              }
+            ]
+          }
+        },
+        {
+          "id": "RECOVERY-POLICY",
+          "status": "signed",
+          "data": {
+            "incident": 100,
+            "max_rpo": 30,
+            "opening_balance": 100
+          }
+        },
+        {
+          "id": "LATEST-DRAFT",
+          "status": "draft",
+          "data": {
+            "choose": [
+              "O3",
+              "P3"
+            ]
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "checkpoint_ids": "dictionary store ID",
+        "included_transaction_ids": [
+          "IDs"
+        ],
+        "recoverable_time": "integer",
+        "rpo_minutes": "integer",
+        "reconstructed_balance_dollars": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "restore"
+    },
+    {
+      "id": "regional_failover",
+      "base_id": "regional_failover",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Select regional capacity that survives a single fault domain",
+      "mechanism": "robust_capacity_design",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Select any subset of indivisible capacity blocks. Blocks share a fault domain as listed: failure removes every selected block in that domain. Demand=100 requests/sec. In normal operation and after failure of any one listed domain, remaining capacity from blocks whose latency_ms<=100 must be >=100. Slow blocks never serve this demand. Block costs are paid once; no proportional purchase. At least one selected block must be in primary region. Minimize total cost, ties smallest number of blocks then lexicographic IDs. Report selected_ids,total_cost_dollars, eligible_normal_capacity and surviving_capacity_by_domain for all listed domains. Domain assignment, not region label, determines correlated failure."
+          }
+        },
+        {
+          "id": "CAPACITY",
+          "status": "verified",
+          "data": {
+            "blocks": [
+              {
+                "id": "A",
+                "region": "primary",
+                "domain": "X",
+                "capacity": 70,
+                "latency_ms": 50,
+                "cost": 100
+              },
+              {
+                "id": "B",
+                "region": "primary",
+                "domain": "X",
+                "capacity": 40,
+                "latency_ms": 60,
+                "cost": 60
+              },
+              {
+                "id": "C",
+                "region": "west",
+                "domain": "Y",
+                "capacity": 60,
+                "latency_ms": 90,
+                "cost": 90
+              },
+              {
+                "id": "D",
+                "region": "west",
+                "domain": "Z",
+                "capacity": 50,
+                "latency_ms": 95,
+                "cost": 100
+              },
+              {
+                "id": "E",
+                "region": "remote",
+                "domain": "Q",
+                "capacity": 100,
+                "latency_ms": 140,
+                "cost": 30
+              },
+              {
+                "id": "F",
+                "region": "east",
+                "domain": "Z",
+                "capacity": 60,
+                "latency_ms": 80,
+                "cost": 110
+              }
+            ]
+          }
+        },
+        {
+          "id": "FAILURE-MODEL",
+          "status": "signed",
+          "data": {
+            "domains": [
+              "X",
+              "Y",
+              "Z",
+              "Q"
+            ],
+            "demand": 100,
+            "max_latency_ms": 100,
+            "primary_region": "primary"
+          }
+        },
+        {
+          "id": "CAPACITY-DRAFT",
+          "status": "draft",
+          "data": {
+            "B_domain": "W",
+            "E_latency_ms": 50
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "selected_ids": [
+          "IDs"
+        ],
+        "total_cost_dollars": "integer",
+        "eligible_normal_capacity": "integer",
+        "surviving_capacity_by_domain": "dictionary domain integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "regional"
+    },
+    {
+      "id": "expand_contract_rollout",
+      "base_id": "expand_contract_rollout",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Sequence a schema migration with reversible and irreversible gates",
+      "mechanism": "state_transition_planning",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Start with schema old, API old, worker old, dual_write false, backfilled false, validated false, fence false. Perform each listed action once, in any safe order. E expands schema to both. D turns dual_write on and requires schema both. A upgrades API to new and requires schema both and dual_write. W upgrades worker to new and requires schema both and backfilled. B backfills and requires dual_write and API new. V validates and requires backfilled and worker new. F installs fence and requires validated. C contracts schema to new and requires API new, worker new, validated, fence. After every step: schema old forbids new components; schema new requires both components new and fence. Choose lexicographically smallest safe full sequence by action IDs, not a prose preferred order. C is irreversible; last_reversible_action is the action immediately before C. Report sequence, last_reversible_action, actions_that_require_dual_write and final_state. Draft runbook order is not authoritative."
+          }
+        },
+        {
+          "id": "MIGRATION",
+          "status": "signed",
+          "data": {
+            "actions": [
+              "E",
+              "D",
+              "A",
+              "W",
+              "B",
+              "V",
+              "F",
+              "C"
+            ],
+            "initial": {
+              "schema": "old",
+              "api": "old",
+              "worker": "old",
+              "dual_write": false,
+              "backfilled": false,
+              "validated": false,
+              "fence": false
+            }
+          }
+        },
+        {
+          "id": "GATES",
+          "status": "signed",
+          "data": {
+            "validation_required": true,
+            "fence_required": true
+          }
+        },
+        {
+          "id": "RUNBOOK-DRAFT",
+          "status": "draft",
+          "data": {
+            "sequence": [
+              "E",
+              "A",
+              "W",
+              "D",
+              "B",
+              "V",
+              "F",
+              "C"
+            ]
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "sequence": [
+          "ordered IDs"
+        ],
+        "last_reversible_action": "ID",
+        "actions_that_require_dual_write": [
+          "IDs"
+        ],
+        "final_state": "dictionary state",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "migration"
+    },
+    {
+      "id": "version_contract_resolution",
+      "base_id": "version_contract_resolution",
+      "variant_kind": "base",
+      "difficulty": "complex",
+      "workflow": "Resolve a release bundle with dependency and capability constraints",
+      "mechanism": "finite_constraint_satisfaction",
+      "documents": [
+        {
+          "id": "RULES",
+          "status": "signed",
+          "data": {
+            "text": "Choose exactly one version per package API, WORKER, CLIENT, AUTH. Each version has a cost and offered protocol/capabilities. API protocol must equal WORKER protocol; CLIENT must accept that API protocol; AUTH must offer every API-required capability. Also WORKER required_auth_generation <= AUTH generation. Signed release policy requires CLIENT supports_pagination=true and API supports_idempotency=true; version number alone implies no capability. Minimize total migration cost, then lexicographic tuple version IDs ordered API,WORKER,CLIENT,AUTH. Report versions dictionary, total_migration_cost_dollars, selected_protocol and rejected_cheapest_bundle_reasons. The cheapest unconstrained bundle means lowest-cost version independently for each package; name violated rule IDs from protocol_match, client_protocol, auth_capability, auth_generation, pagination, idempotency."
+          }
+        },
+        {
+          "id": "VERSIONS",
+          "status": "verified",
+          "data": {
+            "API": [
+              {
+                "id": "A1",
+                "cost": 0,
+                "protocol": 1,
+                "requires": [
+                  "read"
+                ],
+                "idempotency": false
+              },
+              {
+                "id": "A2",
+                "cost": 40,
+                "protocol": 2,
+                "requires": [
+                  "read",
+                  "write"
+                ],
+                "idempotency": true
+              },
+              {
+                "id": "A3",
+                "cost": 60,
+                "protocol": 1,
+                "requires": [
+                  "read"
+                ],
+                "idempotency": true
+              }
+            ],
+            "WORKER": [
+              {
+                "id": "W1",
+                "cost": 0,
+                "protocol": 1,
+                "auth_generation": 1
+              },
+              {
+                "id": "W2",
+                "cost": 20,
+                "protocol": 2,
+                "auth_generation": 2
+              }
+            ],
+            "CLIENT": [
+              {
+                "id": "C1",
+                "cost": 0,
+                "accepts": [
+                  1
+                ],
+                "pagination": false
+              },
+              {
+                "id": "C2",
+                "cost": 15,
+                "accepts": [
+                  1,
+                  2
+                ],
+                "pagination": true
+              }
+            ],
+            "AUTH": [
+              {
+                "id": "H1",
+                "cost": 0,
+                "capabilities": [
+                  "read"
+                ],
+                "generation": 1
+              },
+              {
+                "id": "H2",
+                "cost": 25,
+                "capabilities": [
+                  "read",
+                  "write"
+                ],
+                "generation": 2
+              }
+            ]
+          }
+        },
+        {
+          "id": "RELEASE-POLICY",
+          "status": "signed",
+          "data": {
+            "pagination": true,
+            "idempotency": true
+          }
+        },
+        {
+          "id": "ROADMAP-DRAFT",
+          "status": "draft",
+          "data": {
+            "A1_idempotency": true,
+            "H1_write": true
+          }
+        }
+      ],
+      "question": "Use only the fictional source records and signed rules. Reconcile authority and compute the requested decision and audit fields. Choose all relevant authoritative evidence IDs, excluding drafts or superseded summaries. Money and time fields are integers unless stated otherwise. ID collections must be sorted lexicographically; sequence is ordered. Return only one JSON object. Do not invent missing facts.",
+      "schema": {
+        "versions": "dictionary package version ID",
+        "total_migration_cost_dollars": "integer",
+        "selected_protocol": "integer",
+        "rejected_cheapest_bundle_reasons": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "choice": "versions"
+    }
+  ]
+}

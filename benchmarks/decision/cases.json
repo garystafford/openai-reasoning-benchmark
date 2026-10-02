@@ -1,0 +1,709 @@
+{
+  "version": 2,
+  "cases": [
+    {
+      "id": "disruption_response",
+      "profile": "broad_enterprise",
+      "workflow": "Select a profitable fulfillment plan after a supplier delay while honoring reservations, quarantine, and shipment deadlines.",
+      "documents": [
+        {
+          "id": "INV-DRAFT",
+          "status": "superseded",
+          "text": "An early morning worksheet showed A: X=16,Y=12 and B: X=12,Y=12. Do not use this worksheet after the final count is signed."
+        },
+        {
+          "id": "INV-FINAL",
+          "status": "signed",
+          "text": "Physical inventory before holds and reservations, at start of day 1. A: X=14,Y=9. B: X=10,Y=12. These are the only opening stocks."
+        },
+        {
+          "id": "HOLD-7",
+          "status": "active",
+          "text": "Quarantine 4 units of X at A for the entire planning horizon. These cannot be shipped or transferred."
+        },
+        {
+          "id": "RES-3",
+          "status": "confirmed",
+          "text": "Reserve 3 units of Y at B for a previously committed order outside this register. Deduct this reservation once from opening available stock; its contribution is outside this decision."
+        },
+        {
+          "id": "ORDER-REGISTER",
+          "status": "final",
+          "records": [
+            {
+              "id": "O1",
+              "site": "A",
+              "day": 2,
+              "X": 6,
+              "Y": 1,
+              "contribution": 180,
+              "status": "open",
+              "mandatory": true
+            },
+            {
+              "id": "O2",
+              "site": "A",
+              "day": 2,
+              "X": 4,
+              "Y": 4,
+              "contribution": 170,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O3",
+              "site": "B",
+              "day": 2,
+              "X": 4,
+              "Y": 5,
+              "contribution": 190,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O4",
+              "site": "B",
+              "day": 2,
+              "X": 5,
+              "Y": 3,
+              "contribution": 160,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O5",
+              "site": "A",
+              "day": 4,
+              "X": 8,
+              "Y": 2,
+              "contribution": 260,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O6",
+              "site": "A",
+              "day": 4,
+              "X": 2,
+              "Y": 7,
+              "contribution": 220,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O7",
+              "site": "B",
+              "day": 4,
+              "X": 7,
+              "Y": 3,
+              "contribution": 240,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O8",
+              "site": "B",
+              "day": 4,
+              "X": 3,
+              "Y": 6,
+              "contribution": 210,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O9",
+              "site": "A",
+              "day": 4,
+              "X": 5,
+              "Y": 5,
+              "contribution": 230,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O10",
+              "site": "B",
+              "day": 4,
+              "X": 6,
+              "Y": 6,
+              "contribution": 270,
+              "status": "open",
+              "mandatory": false
+            },
+            {
+              "id": "O11",
+              "site": "A",
+              "day": 2,
+              "X": 1,
+              "Y": 3,
+              "contribution": 90,
+              "status": "cancelled",
+              "mandatory": false
+            },
+            {
+              "id": "O12",
+              "site": "B",
+              "day": 4,
+              "X": 2,
+              "Y": 2,
+              "contribution": 100,
+              "status": "open",
+              "mandatory": false
+            }
+          ]
+        },
+        {
+          "id": "SUPPLY-OPTIONS",
+          "status": "current_except_amendments",
+          "records": [
+            {
+              "id": "S1",
+              "site": "A",
+              "day": 2,
+              "X": 8,
+              "Y": 3,
+              "cost": 110,
+              "type": "purchase"
+            },
+            {
+              "id": "S2",
+              "site": "A",
+              "day": 2,
+              "X": 8,
+              "Y": 3,
+              "cost": 170,
+              "type": "purchase"
+            },
+            {
+              "id": "S3",
+              "site": "B",
+              "day": 3,
+              "X": 4,
+              "Y": 8,
+              "cost": 130,
+              "type": "purchase"
+            },
+            {
+              "id": "S4",
+              "site": "B",
+              "day": 1,
+              "X": 4,
+              "Y": 0,
+              "cost": 40,
+              "type": "transfer_from_A"
+            }
+          ],
+          "text": "Each option is indivisible and may be selected at most once. S1 and S2 are alternative shipping modes for the SAME shipment; at most one can be selected. S4 deducts 4 X from A and adds 4 X to B at start of day 1. Costs are incremental dollars."
+        },
+        {
+          "id": "SUPPLIER-NOTICE",
+          "status": "confirmed",
+          "text": "S1 is delayed: its receipt is now start of day 3, replacing the day 2 date in SUPPLY-OPTIONS. S2 remains start of day 2. S3 is unchanged."
+        },
+        {
+          "id": "SALES-CHAT",
+          "status": "unapproved_request",
+          "text": "Sales would like O11 reinstated and suggested using the quarantined stock if needed. Neither request has been approved."
+        },
+        {
+          "id": "EXECUTION-RULES",
+          "status": "approved",
+          "text": "Serve orders only from their named site, in full, on their stated day. Selected supply arrives before that day's orders. All daily inventory balances must stay nonnegative. No other transfers, orders, receipts, or partial shipments are allowed. Honor mandatory open orders; exclude cancelled orders. Supply-option costs may total at most $260. Maximize selected order contribution minus incremental option cost. Ties prefer lower option cost, then lexicographically smaller sorted order-ID list, then smaller sorted option-ID list. Use ordinary string sorting (O10 before O2)."
+        }
+      ],
+      "question": "Choose the optimal plan for days 1\u20134. Report ending AVAILABLE inventory, excluding the original hold and reservation. Evidence IDs must identify the operative records used (exclude superseded/unapproved documents). The missing_evidence list is empty if the supplied records suffice. Include unfilled optional OPEN order IDs. Monetary values are whole dollars.",
+      "schema": {
+        "selected_orders": [
+          "sorted IDs"
+        ],
+        "selected_options": [
+          "sorted IDs"
+        ],
+        "contribution_dollars": "integer",
+        "option_cost_dollars": "integer",
+        "net_value_dollars": "integer",
+        "ending_available": {
+          "A": {
+            "X": "integer",
+            "Y": "integer"
+          },
+          "B": {
+            "X": "integer",
+            "Y": "integer"
+          }
+        },
+        "unfilled_optional_orders": [
+          "sorted IDs"
+        ],
+        "evidence_ids": [
+          "sorted operative IDs"
+        ],
+        "missing_evidence": [
+          "sorted IDs or empty"
+        ]
+      },
+      "difficulty": "complex"
+    },
+    {
+      "id": "diligence_reconciliation",
+      "profile": "consulting",
+      "workflow": "Reconcile a target-company diligence pack and identify whether the financial test is enough to approve the transaction.",
+      "documents": [
+        {
+          "id": "MANAGEMENT-DECK",
+          "status": "draft",
+          "text": "Management presents EBITDA of $15.5 million, debt of $46 million, and a 3.0x leverage limit. The deck mixes a group forecast with standalone historical results; it is not the authoritative source."
+        },
+        {
+          "id": "AUDIT-SCHEDULE",
+          "status": "signed",
+          "units": "USD thousands",
+          "text": "Continuing standalone business, FY2025. These quarterly figures are BEFORE the closing adjustments in CLOSE-REGISTER. Operating costs exclude interest, tax, depreciation and amortization. Impairment described below is included in operating costs. Reported EBITDA for this exercise is revenue less these operating costs.",
+          "records": [
+            {
+              "quarter": "Q1",
+              "domestic_revenue": 18000,
+              "export_revenue": 6000,
+              "operating_cost": 21300
+            },
+            {
+              "quarter": "Q2",
+              "domestic_revenue": 20000,
+              "export_revenue": 7000,
+              "operating_cost": 24200
+            },
+            {
+              "quarter": "Q3",
+              "domestic_revenue": 21000,
+              "export_revenue": 8000,
+              "operating_cost": 25600
+            },
+            {
+              "quarter": "Q4",
+              "domestic_revenue": 22000,
+              "export_revenue": 9000,
+              "operating_cost": 27800
+            }
+          ]
+        },
+        {
+          "id": "CLOSE-REGISTER",
+          "status": "signed",
+          "units": "USD thousands",
+          "text": "Apply only signed closing entries for the continuing entity with FY2025 effective dates. Entries have not yet been included in AUDIT-SCHEDULE. Posting date alone does not determine the reporting period.",
+          "records": [
+            {
+              "id": "C1",
+              "entity": "continuing",
+              "effective": "2025-12-31",
+              "posted": "2026-01-08",
+              "signed": true,
+              "account": "revenue",
+              "delta": -1800
+            },
+            {
+              "id": "C2",
+              "entity": "continuing",
+              "effective": "2025-12-31",
+              "posted": "2026-01-10",
+              "signed": true,
+              "account": "operating_cost",
+              "delta": -600
+            },
+            {
+              "id": "C3",
+              "entity": "discontinued",
+              "effective": "2025-12-31",
+              "posted": "2026-01-10",
+              "signed": true,
+              "account": "operating_cost",
+              "delta": 900
+            },
+            {
+              "id": "C4",
+              "entity": "continuing",
+              "effective": "2025-12-31",
+              "posted": "2026-01-12",
+              "signed": false,
+              "account": "revenue",
+              "delta": 1200
+            },
+            {
+              "id": "C5",
+              "entity": "continuing",
+              "effective": "2026-01-01",
+              "posted": "2026-01-12",
+              "signed": true,
+              "account": "operating_cost",
+              "delta": 500
+            }
+          ]
+        },
+        {
+          "id": "ADD-BACK-REGISTER",
+          "status": "reconciled",
+          "units": "USD thousands",
+          "text": "These amounts are already included in the continuing-business costs after valid closing entries. Restructuring=2500; transaction fees=1800; impairment=200; ongoing marketing=300. Proposed future synergies=1200 are not booked and are not an incurred cost. Do not count any line twice."
+        },
+        {
+          "id": "LOAN-SIGNED",
+          "status": "executed",
+          "text": "Contractual adjusted EBITDA = reported EBITDA + impairment addback + permitted capped addbacks. Only restructuring and transaction fees enter the capped pool. Permitted capped addbacks are the smaller of their sum and 20% of FINAL adjusted EBITDA. Ongoing marketing and future synergies are ineligible. Net debt = continuing-business gross debt minus eligible cash. Eligible cash = max(unrestricted cash minus a $2.5 million operating reserve, 0). Restricted cash is never eligible. The leverage test is net debt <= 3.25 * adjusted EBITDA. Use exact values without intermediate rounding."
+        },
+        {
+          "id": "LOAN-DRAFT",
+          "status": "unsigned",
+          "text": "Proposed amendment would lower the leverage multiple to 3.0x. It has not been executed and has no effect."
+        },
+        {
+          "id": "DEBT-CASH",
+          "status": "confirmed",
+          "text": "Debt amounts: continuing USD loans $32 million and $14 million; continuing EUR loan EUR 3 million. Discontinued-entity USD debt $6.5 million is excluded from this transaction. Convert EUR debt at the fixed closing rate USD 1.20 per EUR. Continuing unrestricted cash $7.8 million; restricted cash $2.2 million. These balances already incorporate all closing entries; do not apply the income-statement adjustments to cash again."
+        },
+        {
+          "id": "VALUATION-MANDATE",
+          "status": "approved",
+          "text": "Indicative enterprise value is 8 times contractual adjusted EBITDA. Indicative equity value = enterprise value - net debt. This is a stipulated exercise convention, with no additional adjustments."
+        },
+        {
+          "id": "DILIGENCE-CHECKLIST",
+          "status": "approved",
+          "text": "A final approve recommendation requires both a passing leverage test and verified top-customer revenue concentration no greater than 25%. If the leverage test fails, recommend reject. If leverage passes but concentration evidence is absent, recommend conditional_review and report concentration_pct=null. The customer-level revenue schedule was requested but is NOT included in this pack; missing_evidence must then be [\"customer_revenue_schedule\"]."
+        }
+      ],
+      "question": "Reconcile the pack. Return dollar amounts in USD dollars, NOT thousands. List the applied closing-entry IDs and operative evidence-document IDs alphabetically. Report the financial result and the recommendation permitted by the supplied evidence.",
+      "schema": {
+        "reported_ebitda_dollars": "integer",
+        "allowed_capped_addbacks_dollars": "integer",
+        "adjusted_ebitda_dollars": "integer",
+        "net_debt_dollars": "integer",
+        "leverage_headroom_dollars": "integer",
+        "leverage_compliant": "boolean",
+        "enterprise_value_dollars": "integer",
+        "equity_value_dollars": "integer",
+        "applied_close_ids": [
+          "IDs"
+        ],
+        "concentration_pct": "number or null",
+        "recommendation": "approve, reject, or conditional_review",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "difficulty": "complex"
+    },
+    {
+      "id": "incident_handoff",
+      "profile": "technical",
+      "workflow": "Prepare an evidence-based incident handoff and safe mitigation from conflicting telemetry and incomplete payment outcomes.",
+      "documents": [
+        {
+          "id": "DEPLOYMENT",
+          "status": "confirmed",
+          "text": "New application build began rollout immediately before the window. Both old and new builds remained active in east and west. A recent deploy alone is not proof of cause."
+        },
+        {
+          "id": "CLOCKS",
+          "status": "verified",
+          "text": "Analyze UTC-relative seconds [0,60), with zero meaning 10:00:00 UTC. East local clocks are 90 seconds AHEAD of UTC. West local clocks are 30 seconds BEHIND UTC. Convert local_seconds to UTC-relative seconds before filtering."
+        },
+        {
+          "id": "TRACE",
+          "status": "complete_for_window",
+          "text": "The following is the complete trace of attempts using this vendor credential during [0,60), plus one boundary event and duplicate ingestion rows. Deduplicate by event_id. A status 200 proves a vendor response, not necessarily that the client received it before its deadline.",
+          "records": [
+            {
+              "event_id": "J6-1",
+              "job": "J6",
+              "attempt": 1,
+              "local_seconds": -18,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k6"
+            },
+            {
+              "event_id": "J2-2",
+              "job": "J2",
+              "attempt": 2,
+              "local_seconds": 106,
+              "node": "east",
+              "status": 200,
+              "build": "new",
+              "idempotency_key": "k2"
+            },
+            {
+              "event_id": "J3-2",
+              "job": "J3",
+              "attempt": 2,
+              "local_seconds": -10,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k3"
+            },
+            {
+              "event_id": "J5-2",
+              "job": "J5",
+              "attempt": 2,
+              "local_seconds": 114,
+              "node": "east",
+              "status": 200,
+              "build": "new",
+              "idempotency_key": "k5-retry"
+            },
+            {
+              "event_id": "J6-2",
+              "job": "J6",
+              "attempt": 2,
+              "local_seconds": -2,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k6"
+            },
+            {
+              "event_id": "J3-3",
+              "job": "J3",
+              "attempt": 3,
+              "local_seconds": 2,
+              "node": "west",
+              "status": 200,
+              "build": "old",
+              "idempotency_key": "k3"
+            },
+            {
+              "event_id": "J6-3",
+              "job": "J6",
+              "attempt": 3,
+              "local_seconds": 8,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k6"
+            },
+            {
+              "event_id": "J6-4",
+              "job": "J6",
+              "attempt": 4,
+              "local_seconds": 18,
+              "node": "west",
+              "status": 200,
+              "build": "old",
+              "idempotency_key": "k6"
+            },
+            {
+              "event_id": "J7-1",
+              "job": "J7",
+              "attempt": 1,
+              "local_seconds": 148,
+              "node": "east",
+              "status": 200,
+              "build": "new",
+              "idempotency_key": "k7"
+            },
+            {
+              "event_id": "J8-1",
+              "job": "J8",
+              "attempt": 1,
+              "local_seconds": 30,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k8"
+            },
+            {
+              "event_id": "J3-1",
+              "job": "J3",
+              "attempt": 1,
+              "local_seconds": -24,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k3"
+            },
+            {
+              "event_id": "J3-2",
+              "job": "J3",
+              "attempt": 2,
+              "local_seconds": -10,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k3"
+            },
+            {
+              "event_id": "J1-1",
+              "job": "J1",
+              "attempt": 1,
+              "local_seconds": 92,
+              "node": "east",
+              "status": 200,
+              "build": "old",
+              "idempotency_key": "k1"
+            },
+            {
+              "event_id": "J2-1",
+              "job": "J2",
+              "attempt": 1,
+              "local_seconds": 94,
+              "node": "east",
+              "status": 429,
+              "build": "new",
+              "idempotency_key": "k2"
+            },
+            {
+              "event_id": "J3-1",
+              "job": "J3",
+              "attempt": 1,
+              "local_seconds": -24,
+              "node": "west",
+              "status": 429,
+              "build": "old",
+              "idempotency_key": "k3"
+            },
+            {
+              "event_id": "J4-1",
+              "job": "J4",
+              "attempt": 1,
+              "local_seconds": -22,
+              "node": "west",
+              "status": 200,
+              "build": "new",
+              "idempotency_key": "k4"
+            },
+            {
+              "event_id": "J5-1",
+              "job": "J5",
+              "attempt": 1,
+              "local_seconds": 100,
+              "node": "east",
+              "status": 429,
+              "build": "new",
+              "idempotency_key": "k5"
+            }
+          ]
+        },
+        {
+          "id": "CLIENT-RECEIPTS",
+          "status": "authoritative",
+          "text": "These are the only client-visible successful receipts; deadlines and receipt times are UTC-relative seconds. A job succeeds for the client only if its listed receipt time is at or before its deadline. Missing receipt means no observed client success. Count jobs J1 through J7 for the client-success metric, regardless of when a late receipt occurred.",
+          "records": [
+            {
+              "job": "J1",
+              "deadline": 20,
+              "receipt": 3
+            },
+            {
+              "job": "J2",
+              "deadline": 25,
+              "receipt": 17
+            },
+            {
+              "job": "J3",
+              "deadline": 30,
+              "receipt": 33
+            },
+            {
+              "job": "J4",
+              "deadline": 25,
+              "receipt": 9
+            },
+            {
+              "job": "J5",
+              "deadline": 30,
+              "receipt": null
+            },
+            {
+              "job": "J6",
+              "deadline": 45,
+              "receipt": 49
+            },
+            {
+              "job": "J7",
+              "deadline": 75,
+              "receipt": 59
+            }
+          ]
+        },
+        {
+          "id": "VENDOR-CONTRACT",
+          "status": "current",
+          "text": "The shared credential permits 12 attempts per minute. Every initial request and retry consumes one attempt. Status 429 here denotes exhausted request allowance. Independent vendor health check was healthy; the trace has no 5xx responses."
+        },
+        {
+          "id": "HYPOTHESIS-RULES",
+          "status": "diagnostic_screen",
+          "text": "H1 new-build regression is consistent only if all 429s occur on new-build attempts. H2 shared-credential overload is consistent if unique attempts in the window exceed 12 and 429s occur on BOTH builds. H3 vendor-wide outage is consistent only if at least one 5xx occurs and the independent health check fails. Return all consistent IDs. These conditions identify consistency, not causation: confirmed_root_cause must remain null."
+        },
+        {
+          "id": "PAYMENT-LOOKUP",
+          "status": "partial",
+          "text": "Original J5 idempotency key is k5. The client timed out. A vendor lookup returned succeeded record P-55 for key k5-retry, and no record for k5 in the first page. The lookup is NOT complete. Runbook: when the exact original key is absent from an incomplete lookup, complete_lookup before any retry or refund. A success on another key must be flagged for reconciliation, not treated as proof of the original request outcome."
+        },
+        {
+          "id": "MITIGATION-OPTIONS",
+          "status": "proposals",
+          "records": [
+            {
+              "id": "M1",
+              "job_admissions_per_minute": 6,
+              "max_attempts_per_job": 2,
+              "preserve_key": true,
+              "honor_deadline": true
+            },
+            {
+              "id": "M2",
+              "job_admissions_per_minute": 8,
+              "max_attempts_per_job": 2,
+              "preserve_key": true,
+              "honor_deadline": true
+            },
+            {
+              "id": "M3",
+              "job_admissions_per_minute": 12,
+              "max_attempts_per_job": 1,
+              "preserve_key": true,
+              "honor_deadline": true
+            },
+            {
+              "id": "M4",
+              "job_admissions_per_minute": 6,
+              "max_attempts_per_job": 2,
+              "preserve_key": false,
+              "honor_deadline": true
+            }
+          ],
+          "text": "A safe option must retain exactly one retry (max_attempts_per_job=2, including the initial attempt), preserve the original idempotency key, honor deadlines, and keep worst-case attempts/minute <=12. Choose the safe option with highest admissions/minute; tie by alphabetical ID. No alternative options may be invented. If no supplied option is safe, return mitigation_id=null and worst_case_attempts_per_minute=null."
+        }
+      ],
+      "question": "Produce the incident handoff. Count 429s after deduplication and UTC window filtering. Report client successes independently from vendor 200s. List jobs whose in-window retries change the first attempt's key. Include operative evidence IDs alphabetically (all documents that support the requested calculations/decisions). Do not claim a confirmed cause from these observations.",
+      "schema": {
+        "unique_attempts": "integer",
+        "rate_limited_attempts": "integer",
+        "client_successes": "integer",
+        "client_jobs": "integer",
+        "consistent_hypotheses": [
+          "IDs"
+        ],
+        "confirmed_root_cause": "null",
+        "changed_key_jobs": [
+          "IDs"
+        ],
+        "j5_action": "exactly one action code: complete_lookup, retry_original_key, refund, or accept_retry_as_original; do not write prose",
+        "reconciliation_payment_ids": [
+          "IDs"
+        ],
+        "mitigation_id": "ID or null",
+        "worst_case_attempts_per_minute": "integer or null",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "difficulty": "complex"
+    }
+  ]
+}

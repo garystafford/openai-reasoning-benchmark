@@ -1,0 +1,28 @@
+{
+  "name": "openai-reasoning-benchmark",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Promptfoo evaluations of OpenAI reasoning quality, tokens, latency, and cost",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "eval": "node scripts/promptfoo.cjs eval",
+    "eval:plan": "node scripts/promptfoo.cjs plan",
+    "eval:view": "node scripts/promptfoo.cjs view",
+    "test": "node --test tests/*.test.cjs && PYTHONPATH=. python3 -m unittest discover -s tests -p 'test_*.py'",
+    "verify:answers": "PYTHONPATH=. python3 -m benchmarks.verify_golden",
+    "eval:report": "python3 scripts/decision_report.py",
+    "eval:matrix": "node scripts/promptfoo.cjs matrix",
+    "eval:matrix:plan": "node scripts/promptfoo.cjs matrix-plan",
+    "build:main": "PYTHONPATH=. python3 scripts/build_main_dataset.py"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "dotenv": "17.3.1",
+    "promptfoo": "0.123.1"
+  },
+  "overrides": {
+    "ibm-cloud-sdk-core": "5.6.2"
+  }
+}

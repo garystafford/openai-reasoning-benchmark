@@ -1,0 +1,426 @@
+{
+  "version": 2,
+  "answers": {
+    "production_jobshop": {
+      "cut_starts": {
+        "A": 3,
+        "B": 0,
+        "C": 6,
+        "D": 2
+      },
+      "finish_starts": {
+        "A": 8,
+        "B": 2,
+        "C": 12,
+        "D": 4
+      },
+      "finish_completions": {
+        "A": 12,
+        "B": 4,
+        "C": 15,
+        "D": 6
+      },
+      "late_minutes": {
+        "A": 2,
+        "B": 0,
+        "C": 1,
+        "D": 0
+      },
+      "total_penalty_dollars": 50,
+      "makespan_minutes": 15,
+      "evidence_ids": [
+        "LOTS",
+        "MAINTENANCE",
+        "RULES"
+      ]
+    },
+    "warehouse_queue": {
+      "pick_start": {
+        "A": 0,
+        "B": 7,
+        "C": 9,
+        "D": 12,
+        "E": 13
+      },
+      "pack_start": {
+        "A": 4,
+        "B": 12,
+        "C": 14,
+        "D": 15,
+        "E": 19
+      },
+      "delivered_at": {
+        "A": 7,
+        "B": 14,
+        "C": 15,
+        "D": 19,
+        "E": 21
+      },
+      "late_order_ids": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "total_lateness_minutes": 15,
+      "evidence_ids": [
+        "ORDERS",
+        "RULES",
+        "SHIFT"
+      ]
+    },
+    "contingent_supplier": {
+      "chosen_ids": [
+        "A",
+        "B"
+      ],
+      "per_scenario_net_dollars": {
+        "normal": 1000,
+        "east_outage": 540,
+        "port_delay": 1000
+      },
+      "per_scenario_regret_dollars": {
+        "normal": 20,
+        "east_outage": 270,
+        "port_delay": 20
+      },
+      "worst_regret_dollars": 270,
+      "mean_net_cents": 84667,
+      "evidence_ids": [
+        "CONTRACTS",
+        "RULES",
+        "SCENARIOS"
+      ]
+    },
+    "invoice_match": {
+      "payable_dollars": {
+        "P1": 850,
+        "P2": 0,
+        "P3": 320
+      },
+      "held_equivalents": {
+        "P1": 1,
+        "P2": 1,
+        "P3": 1
+      },
+      "reasons": {
+        "P1": "short_receipt",
+        "P2": "price_dispute",
+        "P3": "short_receipt"
+      },
+      "total_payable_dollars": 1170,
+      "deduplicated_record_ids": [
+        "C1",
+        "R2"
+      ],
+      "evidence_ids": [
+        "INVOICES",
+        "PO",
+        "RECEIPTS",
+        "RULES",
+        "SIGNED-SUBSTITUTION"
+      ]
+    },
+    "treasury_netting": {
+      "positions": {
+        "A:USD": -60,
+        "B:USD": 30,
+        "C:USD": 30,
+        "A:EUR": -30,
+        "B:EUR": 30
+      },
+      "settlement_sequence": [
+        "A>B:EUR:30",
+        "A>B:USD:30",
+        "A>C:USD:30"
+      ],
+      "gross_obligation_ids": [
+        "I4",
+        "I7"
+      ],
+      "funding_dollars": {
+        "A:USD": 45,
+        "A:EUR": 20,
+        "B:EUR": 0,
+        "B:USD": 0,
+        "C:EUR": 25,
+        "C:USD": 0,
+        "D:USD": 0
+      },
+      "total_external_usd_dollars": 99,
+      "evidence_ids": [
+        "CASH",
+        "INVOICES",
+        "NETTING-AGREEMENT",
+        "RULES"
+      ]
+    },
+    "refinance_waterfall": {
+      "loan_id": "B",
+      "principal_dollars": 360000,
+      "fee_dollars": 10000,
+      "gross_debt_dollars": 370000,
+      "allowed_synergies_dollars": 25000,
+      "leverage_limit_dollars": 375000,
+      "annual_interest_dollars": 22200,
+      "distributable_cash_dollars": 150000,
+      "evidence_ids": [
+        "CLOSING",
+        "QUOTES",
+        "RULES"
+      ]
+    },
+    "revenue_cohort_bridge": {
+      "opening_cohort_dollars": 250000,
+      "expansion_dollars": 30000,
+      "contraction_dollars": 25000,
+      "churn_dollars": 50000,
+      "new_reactivated_dollars": 70000,
+      "end_organic_constant_dollars": 275000,
+      "acquired_constant_dollars": 70000,
+      "end_reported_dollars": 340000,
+      "fx_effect_dollars": -5000,
+      "net_retention_bps": 8200,
+      "gross_retention_bps": 7000,
+      "evidence_ids": [
+        "CUSTOMERS",
+        "FX",
+        "RULES"
+      ]
+    },
+    "cash_earnings_quality": {
+      "adjusted_ebitda_dollars": 250000,
+      "operating_cash_dollars": 165000,
+      "sustainable_operating_cash_dollars": 195000,
+      "maintenance_capex_dollars": 45000,
+      "sustainable_fcf_dollars": 150000,
+      "cash_conversion_bps": 6000,
+      "recommendation": "acceptable",
+      "confirmed_fraud": null,
+      "evidence_ids": [
+        "CASH-BRIDGE",
+        "EARNINGS",
+        "RULES"
+      ]
+    },
+    "rollout_impact_estimate": {
+      "standardized_minutes_cents": {
+        "T:pre": 1750,
+        "T:post": 1300,
+        "C:pre": 1575,
+        "C:post": 1475
+      },
+      "effect_minutes_cents": 350,
+      "decision": "extend_trial",
+      "missing_evidence": [],
+      "missing_assumptions": [
+        "parallel_trends"
+      ],
+      "confirmed_causal_effect": null,
+      "evidence_ids": [
+        "CELLS",
+        "RULES",
+        "STUDY-PROTOCOL"
+      ]
+    },
+    "automation_routing": {
+      "policy_id": "P1",
+      "review_cases": 120,
+      "invalid_approvals": 1,
+      "valid_rejections": 6,
+      "handling_cost_dollars": 760,
+      "error_cost_dollars": 220,
+      "total_cost_dollars": 980,
+      "ineligible_policy_ids": [
+        "P2",
+        "P3",
+        "P4"
+      ],
+      "evidence_ids": [
+        "CALIBRATION",
+        "POLICIES",
+        "RULES"
+      ]
+    },
+    "workpackage_assignment": {
+      "assignments": {
+        "A": "J",
+        "B": "L",
+        "C": "L",
+        "V": "K"
+      },
+      "hours_used": {
+        "J": 20,
+        "K": 10,
+        "L": 40,
+        "M": 0
+      },
+      "labor_cost_dollars": 6000,
+      "handoff_cost_dollars": 1500,
+      "total_cost_dollars": 7500,
+      "evidence_ids": [
+        "PACKAGES",
+        "PEOPLE",
+        "RULES"
+      ]
+    },
+    "engagement_rescue": {
+      "selected_ids": [
+        "B",
+        "C",
+        "D"
+      ],
+      "completion_day": 10,
+      "success_bps": 9000,
+      "future_spend_dollars": 30000,
+      "expected_incremental_net_cents": 1680000,
+      "historical_spend_dollars": 40000,
+      "evidence_ids": [
+        "BASELINE",
+        "OPTIONS",
+        "RULES"
+      ]
+    },
+    "fault_hypothesis_constraints": {
+      "minimal_explanations": {
+        "E1": [
+          "A",
+          "B"
+        ],
+        "E2": [
+          "B",
+          "E"
+        ]
+      },
+      "confirmed_fault_ids": [
+        "B"
+      ],
+      "action_id": "M2",
+      "action_cost_dollars": 40,
+      "missing_evidence": [
+        "P5"
+      ],
+      "evidence_ids": [
+        "CONTAINMENT",
+        "PROBES",
+        "RULES",
+        "TOPOLOGY"
+      ]
+    },
+    "lease_fencing_recovery": {
+      "valid_ack_ids": [
+        "W1",
+        "W3",
+        "W4"
+      ],
+      "rejected_ids": [
+        "W2",
+        "W5"
+      ],
+      "safe_replay_sequence": 1,
+      "recovery_token": 9,
+      "decision": "wait_for_fence",
+      "missing_evidence": [
+        "fencing_installation"
+      ],
+      "evidence_ids": [
+        "EVENTS",
+        "LEASES",
+        "RECOVERY-GRANT",
+        "RULES"
+      ]
+    },
+    "consistent_restore_cut": {
+      "checkpoint_ids": {
+        "ORDERS": "O2",
+        "PAYMENTS": "P2"
+      },
+      "included_transaction_ids": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "recoverable_time": 94,
+      "rpo_minutes": 6,
+      "reconstructed_balance_dollars": 120,
+      "evidence_ids": [
+        "CHECKPOINTS",
+        "RECOVERY-POLICY",
+        "RULES",
+        "TRANSACTIONS"
+      ]
+    },
+    "regional_failover": {
+      "selected_ids": [
+        "B",
+        "C",
+        "F"
+      ],
+      "total_cost_dollars": 260,
+      "eligible_normal_capacity": 160,
+      "surviving_capacity_by_domain": {
+        "X": 120,
+        "Y": 100,
+        "Z": 100,
+        "Q": 160
+      },
+      "evidence_ids": [
+        "CAPACITY",
+        "FAILURE-MODEL",
+        "RULES"
+      ]
+    },
+    "expand_contract_rollout": {
+      "sequence": [
+        "E",
+        "D",
+        "A",
+        "B",
+        "W",
+        "V",
+        "F",
+        "C"
+      ],
+      "last_reversible_action": "F",
+      "actions_that_require_dual_write": [
+        "A",
+        "B"
+      ],
+      "final_state": {
+        "schema": "new",
+        "api": "new",
+        "worker": "new",
+        "dual_write": true,
+        "backfilled": true,
+        "validated": true,
+        "fence": true
+      },
+      "evidence_ids": [
+        "GATES",
+        "MIGRATION",
+        "RULES"
+      ]
+    },
+    "version_contract_resolution": {
+      "versions": {
+        "API": "A3",
+        "WORKER": "W1",
+        "CLIENT": "C2",
+        "AUTH": "H1"
+      },
+      "total_migration_cost_dollars": 75,
+      "selected_protocol": 1,
+      "rejected_cheapest_bundle_reasons": [
+        "idempotency",
+        "pagination"
+      ],
+      "evidence_ids": [
+        "RELEASE-POLICY",
+        "RULES",
+        "VERSIONS"
+      ]
+    }
+  }
+}

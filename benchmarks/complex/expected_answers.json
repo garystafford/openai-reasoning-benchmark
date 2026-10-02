@@ -1,0 +1,138 @@
+{
+  "version": 2,
+  "answers": {
+    "sourcing_network": {
+      "selected_offer_ids": [
+        "A1",
+        "A2",
+        "B1"
+      ],
+      "net_cost_dollars": 460,
+      "ending_stock": {
+        "1": {
+          "X": 6,
+          "Y": 2
+        },
+        "2": {
+          "X": 6,
+          "Y": 3
+        },
+        "3": {
+          "X": 3,
+          "Y": 0
+        }
+      },
+      "evidence_ids": [
+        "AMENDMENT",
+        "DEMAND",
+        "OFFERS",
+        "POLICY"
+      ]
+    },
+    "liquidity_facilities": {
+      "decision": "finance",
+      "revolver_draws": {
+        "1": 40000,
+        "2": 20000
+      },
+      "use_bridge": false,
+      "ending_free_cash": {
+        "1": 25000,
+        "2": 15000,
+        "3": 53400
+      },
+      "finance_cost_dollars": 1600,
+      "missing_evidence": [],
+      "evidence_ids": [
+        "BANK",
+        "CASH-LEDGER",
+        "FACILITIES",
+        "FX",
+        "POLICY"
+      ]
+    },
+    "transformation_roadmap": {
+      "selected_ids": [
+        "A",
+        "C",
+        "F",
+        "G"
+      ],
+      "annual_gross_benefits": {
+        "1": 88000,
+        "2": 120000
+      },
+      "capital_dollars": 65000,
+      "engineering_used": 7,
+      "npv_cents": 11417355,
+      "evidence_ids": [
+        "CAPITAL",
+        "INITIATIVES",
+        "POLICY"
+      ]
+    },
+    "engagement_capacity": {
+      "decision": "staff",
+      "assignments": {
+        "discovery": "B",
+        "lead": "F",
+        "model": "B",
+        "review": "D",
+        "launch": "E"
+      },
+      "weekly_cost_dollars": {
+        "1": 5400,
+        "2": 5600,
+        "3": 3600
+      },
+      "total_cost_dollars": 14600,
+      "margin_basis_points": 3916,
+      "blockers": [],
+      "evidence_ids": [
+        "POLICY",
+        "RESERVATIONS",
+        "ROSTER",
+        "WORKPLAN"
+      ]
+    },
+    "recovery_chain": {
+      "decision": "recover",
+      "chain_ids": [
+        "B4",
+        "B5"
+      ],
+      "rpo_minutes": 15,
+      "finish_minutes": 42,
+      "start_minutes": {
+        "RESTORE": 0,
+        "DNS": 0,
+        "REPLAY": 20,
+        "INDEX": 27,
+        "CACHE": 20,
+        "VERIFY": 37
+      },
+      "evidence_ids": [
+        "BACKUPS",
+        "POLICY",
+        "RECOVERY-TARGET",
+        "RUNBOOK"
+      ]
+    },
+    "canary_segment_analysis": {
+      "decision": "rollback",
+      "standardized_control_bps": 195,
+      "standardized_canary_bps": 245,
+      "delta_bps": 50,
+      "raw_control_bps": 110,
+      "raw_canary_bps": 265,
+      "projected_incremental_errors": 20,
+      "missing_evidence": [],
+      "confirmed_root_cause": null,
+      "evidence_ids": [
+        "METRICS",
+        "POLICY",
+        "RELEASE-POLICY"
+      ]
+    }
+  }
+}

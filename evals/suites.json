@@ -1,0 +1,20 @@
+{
+  "decision": {
+    "variant": "decision_matrix_v2",
+    "default": false,
+    "collection": "decision",
+    "systemPrompt": "You are preparing a decision from a fictional customer evidence pack. Follow the supplied rules, reconcile source authority and timing, and do not invent missing evidence. Return only the requested JSON object. No tools, external retrieval, or actions are needed."
+  },
+  "complex": {
+    "variant": "complex_decisions_v3",
+    "default": false,
+    "collection": "decision",
+    "systemPrompt": "You are preparing a decision from a fictional customer evidence pack. Follow the supplied rules, reconcile source authority and timing, and do not invent missing evidence. Return only the requested JSON object. No tools, external retrieval, or actions are needed."
+  },
+  "reasoning": {
+    "variant": "unique_reasoning_v4",
+    "default": false,
+    "collection": "decision",
+    "systemPrompt": "You are preparing a decision from a fictional customer evidence pack. Follow the supplied rules, reconcile source authority and timing, and do not invent missing evidence. Return only the requested JSON object. No tools, external retrieval, or actions are needed."
+  }
+}

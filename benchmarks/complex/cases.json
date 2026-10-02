@@ -1,0 +1,972 @@
+{
+  "version": 3,
+  "cases": [
+    {
+      "id": "sourcing_network",
+      "workflow": "Time-phased resilient procurement",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Opening usable stock is opening minus quarantine. Each offer is an indivisible bundle selectable once. Apply the signed AMENDMENT receipt date instead of OFFERS. Receipts arrive before demand each day; stock immediately after receipts must not exceed the per-SKU storage cap and after demand must never be negative. No borrowing from later receipts. Only approved offers are eligible. At least two distinct suppliers must deliver a positive quantity of X. Selecting both A1 and A2 earns a single $40 discount. Minimize total net cost; ties use lexicographically smallest sorted offer-ID list. Report ending stock for days 1,2,3. Do not treat the draft quote as an approval."
+          }
+        },
+        {
+          "id": "DEMAND",
+          "status": "approved",
+          "data": {
+            "opening": {
+              "X": 2,
+              "Y": 1
+            },
+            "quarantine": {
+              "X": 1,
+              "Y": 0
+            },
+            "daily_demand": [
+              {
+                "X": 3,
+                "Y": 2
+              },
+              {
+                "X": 4,
+                "Y": 2
+              },
+              {
+                "X": 3,
+                "Y": 3
+              }
+            ],
+            "storage_cap": {
+              "X": 10,
+              "Y": 8
+            }
+          }
+        },
+        {
+          "id": "OFFERS",
+          "status": "approved",
+          "data": {
+            "offers": [
+              {
+                "id": "A1",
+                "supplier": "A",
+                "day": 1,
+                "X": 5,
+                "Y": 0,
+                "cost": 150,
+                "approved": true
+              },
+              {
+                "id": "A2",
+                "supplier": "A",
+                "day": 2,
+                "X": 4,
+                "Y": 3,
+                "cost": 180,
+                "approved": true
+              },
+              {
+                "id": "B1",
+                "supplier": "B",
+                "day": 1,
+                "X": 3,
+                "Y": 3,
+                "cost": 170,
+                "approved": true
+              },
+              {
+                "id": "B2",
+                "supplier": "B",
+                "day": 3,
+                "X": 3,
+                "Y": 3,
+                "cost": 150,
+                "approved": true
+              },
+              {
+                "id": "C1",
+                "supplier": "C",
+                "day": 1,
+                "X": 2,
+                "Y": 2,
+                "cost": 130,
+                "approved": true
+              },
+              {
+                "id": "C2",
+                "supplier": "C",
+                "day": 2,
+                "X": 4,
+                "Y": 4,
+                "cost": 190,
+                "approved": true
+              },
+              {
+                "id": "D1",
+                "supplier": "D",
+                "day": 1,
+                "X": 9,
+                "Y": 6,
+                "cost": 200,
+                "approved": false
+              },
+              {
+                "id": "D2",
+                "supplier": "D",
+                "day": 3,
+                "X": 6,
+                "Y": 4,
+                "cost": 180,
+                "approved": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "AMENDMENT",
+          "status": "signed",
+          "data": {
+            "offer_id": "B2",
+            "confirmed_day": 2,
+            "discount_if_both": [
+              "A1",
+              "A2"
+            ],
+            "discount_dollars": 40
+          }
+        },
+        {
+          "id": "QUOTE-DRAFT",
+          "status": "draft",
+          "data": {
+            "offer_id": "D1",
+            "approved": true,
+            "cost": 100
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "selected_offer_ids": [
+          "IDs"
+        ],
+        "net_cost_dollars": "integer or null",
+        "ending_stock": {
+          "1": {
+            "X": "integer",
+            "Y": "integer"
+          },
+          "2": {
+            "X": "integer",
+            "Y": "integer"
+          },
+          "3": {
+            "X": "integer",
+            "Y": "integer"
+          }
+        },
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "selection": "sourcing"
+    },
+    {
+      "id": "liquidity_facilities",
+      "workflow": "Reconcile liquidity and choose financing",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Deduplicate identical CASH-LEDGER IDs; count only settled rows. Convert with locked FX numerator/denominator. Restricted cash is unusable in all periods. Revolver draws are nonnegative multiples of $20,000, only at start of periods 1 and 2, and total principal cannot exceed its signed limit. An optional single $20,000 bridge is available only at start of period 2. Bridge and revolver have separate limits. Each revolver draw accrues simple interest at 100 basis points for each period outstanding (period-1 draw for three periods, period-2 draw for two). Pay all interest, bridge fee, and all principal at end of period 3 after operating cash flows. Free cash must be at least $10,000 at every period end. Minimize total finance cost; then total principal drawn; then period-1 revolver draw. Report the two revolver draws as a dictionary keyed 1 and 2 and ending free cash keyed 1,2,3. If infeasible use decision infeasible, zero draws, bridge false, null cash/cost, missing_evidence empty. Otherwise decision finance. No missing information is implied by a known insufficient limit."
+          }
+        },
+        {
+          "id": "BANK",
+          "status": "approved",
+          "data": {
+            "cash_dollars": 50000,
+            "restricted_dollars": 10000
+          }
+        },
+        {
+          "id": "CASH-LEDGER",
+          "status": "approved",
+          "data": {
+            "rows": [
+              {
+                "id": "L1",
+                "period": 1,
+                "currency": "USD",
+                "amount": -60000,
+                "state": "settled"
+              },
+              {
+                "id": "L2",
+                "period": 1,
+                "currency": "USD",
+                "amount": 5000,
+                "state": "settled"
+              },
+              {
+                "id": "L2",
+                "period": 1,
+                "currency": "USD",
+                "amount": 5000,
+                "state": "settled"
+              },
+              {
+                "id": "L3",
+                "period": 2,
+                "currency": "GBP",
+                "amount": -20000,
+                "state": "settled"
+              },
+              {
+                "id": "L4",
+                "period": 3,
+                "currency": "EUR",
+                "amount": 80000,
+                "state": "settled"
+              },
+              {
+                "id": "L5",
+                "period": 1,
+                "currency": "USD",
+                "amount": 20000,
+                "state": "booked_only"
+              }
+            ]
+          }
+        },
+        {
+          "id": "FX",
+          "status": "locked",
+          "data": {
+            "USD": [
+              1,
+              1
+            ],
+            "GBP": [
+              3,
+              2
+            ],
+            "EUR": [
+              5,
+              4
+            ]
+          }
+        },
+        {
+          "id": "FACILITIES",
+          "status": "signed",
+          "data": {
+            "revolver_limit": 60000,
+            "increment": 20000,
+            "monthly_interest_bps": 100,
+            "bridge_amount": 20000,
+            "bridge_fee": 500,
+            "minimum_free_cash": 10000
+          }
+        },
+        {
+          "id": "FORECAST-DRAFT",
+          "status": "draft",
+          "data": {
+            "revolver_limit": 100000,
+            "restricted_dollars": 0
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "decision": "finance or infeasible",
+        "revolver_draws": {
+          "1": "integer",
+          "2": "integer"
+        },
+        "use_bridge": "boolean",
+        "ending_free_cash": "dictionary of integer periods or null",
+        "finance_cost_dollars": "integer or null",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "missing_evidence"
+      ],
+      "selection": "liquidity"
+    },
+    {
+      "id": "transformation_roadmap",
+      "workflow": "Choose a dependency-aware transformation portfolio",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Select an approved subset. Dependencies are mandatory within the subset, incompatible pairs cannot coexist, and total capital/engineering cannot exceed CAPITAL. Benefits are already incremental to business as usual. For each population and each year use the maximum benefit among selected initiatives, never the sum. Costs occur at time 0; benefits occur at ends of years 1 and 2. Maximize NPV = year1/(1+r) + year2/(1+r)^2 - total_cost, with r=discount_bps/10000. Compare exact rational NPVs before rounding; ties use smallest sorted initiative-ID list. Return annual gross benefits as dictionary 1,2, total capital, engineering used, and NPV in integer cents rounded once at end half-up. Empty portfolio is feasible."
+          }
+        },
+        {
+          "id": "CAPITAL",
+          "status": "approved",
+          "data": {
+            "budget": 80000,
+            "engineering_capacity": 7,
+            "discount_bps": 1000
+          }
+        },
+        {
+          "id": "INITIATIVES",
+          "status": "approved",
+          "data": {
+            "initiatives": [
+              {
+                "id": "A",
+                "cost": 20000,
+                "engineers": 2,
+                "requires": [],
+                "incompatible": [],
+                "benefits": {},
+                "approved": true
+              },
+              {
+                "id": "B",
+                "cost": 25000,
+                "engineers": 2,
+                "requires": [
+                  "A"
+                ],
+                "incompatible": [],
+                "benefits": {
+                  "sales": [
+                    40000,
+                    50000
+                  ]
+                },
+                "approved": true
+              },
+              {
+                "id": "C",
+                "cost": 20000,
+                "engineers": 2,
+                "requires": [
+                  "A"
+                ],
+                "incompatible": [],
+                "benefits": {
+                  "sales": [
+                    30000,
+                    40000
+                  ],
+                  "ops": [
+                    20000,
+                    25000
+                  ]
+                },
+                "approved": true
+              },
+              {
+                "id": "D",
+                "cost": 15000,
+                "engineers": 1,
+                "requires": [],
+                "incompatible": [],
+                "benefits": {
+                  "ops": [
+                    15000,
+                    20000
+                  ]
+                },
+                "approved": true
+              },
+              {
+                "id": "E",
+                "cost": 20000,
+                "engineers": 2,
+                "requires": [],
+                "incompatible": [
+                  "F"
+                ],
+                "benefits": {
+                  "fraud": [
+                    30000,
+                    30000
+                  ]
+                },
+                "approved": true
+              },
+              {
+                "id": "F",
+                "cost": 10000,
+                "engineers": 1,
+                "requires": [],
+                "incompatible": [
+                  "E"
+                ],
+                "benefits": {
+                  "fraud": [
+                    18000,
+                    20000
+                  ]
+                },
+                "approved": true
+              },
+              {
+                "id": "G",
+                "cost": 15000,
+                "engineers": 2,
+                "requires": [
+                  "C"
+                ],
+                "incompatible": [],
+                "benefits": {
+                  "service": [
+                    20000,
+                    35000
+                  ]
+                },
+                "approved": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "BENEFITS-DRAFT",
+          "status": "draft",
+          "data": {
+            "B": {
+              "sales": [
+                100000,
+                100000
+              ]
+            },
+            "engineering_capacity": 9
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "selected_ids": [
+          "IDs"
+        ],
+        "annual_gross_benefits": {
+          "1": "integer",
+          "2": "integer"
+        },
+        "capital_dollars": "integer",
+        "engineering_used": "integer",
+        "npv_cents": "integer",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "selection": "portfolio"
+    },
+    {
+      "id": "engagement_capacity",
+      "workflow": "Staff a multi-week engagement under independence constraints",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Assign exactly one qualified person to each indivisible role. Per-person weekly assigned hours cannot exceed available minus RESERVATIONS. Reviewer must be independent, not a client member, and different from discovery and model assignees. Costs are hours*rate, with no other charges. Exact margin (revenue-cost)/revenue must meet the minimum; report margin_basis_points rounded down. Minimize total cost, ties lexicographic tuple of person IDs by role order discovery,lead,model,review,launch. Report assignments keyed by role, weekly_cost_dollars keyed 1,2,3, total_cost and margin. If no valid assignment, decision unstaffable, assignments empty, all cost/margin fields null, blockers contains independent_reviewer if no eligible independent non-client reviewer, otherwise capacity_or_margin. Otherwise decision staff and blockers empty."
+          }
+        },
+        {
+          "id": "WORKPLAN",
+          "status": "approved",
+          "data": {
+            "revenue": 24000,
+            "minimum_margin_bps": 3500,
+            "roles": [
+              {
+                "id": "discovery",
+                "week": 1,
+                "hours": 40,
+                "skill": "analyst",
+                "independent": false
+              },
+              {
+                "id": "lead",
+                "week": 1,
+                "hours": 20,
+                "skill": "lead",
+                "independent": false
+              },
+              {
+                "id": "model",
+                "week": 2,
+                "hours": 40,
+                "skill": "analyst",
+                "independent": false
+              },
+              {
+                "id": "review",
+                "week": 2,
+                "hours": 20,
+                "skill": "reviewer",
+                "independent": true
+              },
+              {
+                "id": "launch",
+                "week": 3,
+                "hours": 40,
+                "skill": "engineer",
+                "independent": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "ROSTER",
+          "status": "approved",
+          "data": {
+            "people": [
+              {
+                "id": "A",
+                "skills": [
+                  "analyst",
+                  "engineer"
+                ],
+                "rate": 100,
+                "available": [
+                  40,
+                  40,
+                  40
+                ],
+                "independent": true,
+                "client_member": false
+              },
+              {
+                "id": "B",
+                "skills": [
+                  "analyst",
+                  "lead"
+                ],
+                "rate": 80,
+                "available": [
+                  40,
+                  40,
+                  0
+                ],
+                "independent": true,
+                "client_member": false
+              },
+              {
+                "id": "C",
+                "skills": [
+                  "lead",
+                  "reviewer"
+                ],
+                "rate": 160,
+                "available": [
+                  20,
+                  20,
+                  0
+                ],
+                "independent": true,
+                "client_member": true
+              },
+              {
+                "id": "D",
+                "skills": [
+                  "reviewer"
+                ],
+                "rate": 120,
+                "available": [
+                  20,
+                  20,
+                  20
+                ],
+                "independent": true,
+                "client_member": false
+              },
+              {
+                "id": "E",
+                "skills": [
+                  "engineer"
+                ],
+                "rate": 90,
+                "available": [
+                  0,
+                  0,
+                  40
+                ],
+                "independent": true,
+                "client_member": false
+              },
+              {
+                "id": "F",
+                "skills": [
+                  "analyst",
+                  "lead",
+                  "reviewer"
+                ],
+                "rate": 110,
+                "available": [
+                  40,
+                  40,
+                  20
+                ],
+                "independent": false,
+                "client_member": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "RESERVATIONS",
+          "status": "approved",
+          "data": {
+            "hours": {
+              "A": [
+                0,
+                0,
+                0
+              ],
+              "B": [
+                0,
+                0,
+                0
+              ],
+              "C": [
+                0,
+                0,
+                0
+              ],
+              "D": [
+                0,
+                0,
+                0
+              ],
+              "E": [
+                0,
+                0,
+                0
+              ],
+              "F": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        },
+        {
+          "id": "ROSTER-DRAFT",
+          "status": "superseded",
+          "data": {
+            "D": {
+              "independent": true,
+              "rate": 60
+            }
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "decision": "staff or unstaffable",
+        "assignments": "dictionary of role to person IDs",
+        "weekly_cost_dollars": "dictionary or null",
+        "total_cost_dollars": "integer or null",
+        "margin_basis_points": "integer or null",
+        "blockers": [
+          "IDs"
+        ],
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "blockers"
+      ],
+      "selection": "staffing"
+    },
+    {
+      "id": "recovery_chain",
+      "workflow": "Choose a verified backup chain and recovery schedule",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Recover to a complete chain ending in one backup, recursively including every parent in root-to-leaf order. Every member must be verified, have engine-compatible schema and an available key. K2 is additionally available only when K2_available=true. Cutoffs increase strictly down a chain and none exceeds incident time. RPO is incident_minute minus leaf cutoff; it must meet the inclusive target. RESTORE starts at time 0 on a dedicated IO resource and its duration is the sum of chain minutes. Other jobs are nonpreemptive with integer start times >=0, satisfy all predecessor completions, and jobs on the same named resource cannot overlap. All jobs must finish within RTO, inclusive. Minimize finish time, then RPO, then lexicographic ordered chain IDs, then start-time tuple by alphabetically sorted job IDs including RESTORE. Report chain_ids as an ORDERED list, rpo_minutes, finish_minutes and start_minutes keyed by job. If no plan, decision infeasible, chain empty, metrics null and starts empty. Otherwise decision recover. Do not restore unverified or incompatible backups just because their cutoffs are newer."
+          }
+        },
+        {
+          "id": "RECOVERY-TARGET",
+          "status": "approved",
+          "data": {
+            "incident_minute": 100,
+            "max_rpo_minutes": 20,
+            "max_rto_minutes": 45,
+            "engine_schema": "V1",
+            "available_keys": [
+              "K1"
+            ],
+            "K2_available": false
+          }
+        },
+        {
+          "id": "BACKUPS",
+          "status": "approved",
+          "data": {
+            "backups": [
+              {
+                "id": "B0",
+                "parent": null,
+                "cutoff": 40,
+                "minutes": 15,
+                "schema": "V1",
+                "key": "K1",
+                "verified": true
+              },
+              {
+                "id": "B1",
+                "parent": "B0",
+                "cutoff": 70,
+                "minutes": 10,
+                "schema": "V1",
+                "key": "K1",
+                "verified": true
+              },
+              {
+                "id": "B2",
+                "parent": "B1",
+                "cutoff": 90,
+                "minutes": 5,
+                "schema": "V1",
+                "key": "K1",
+                "verified": false
+              },
+              {
+                "id": "B3",
+                "parent": null,
+                "cutoff": 80,
+                "minutes": 8,
+                "schema": "V1",
+                "key": "K2",
+                "verified": true
+              },
+              {
+                "id": "B4",
+                "parent": null,
+                "cutoff": 60,
+                "minutes": 12,
+                "schema": "V1",
+                "key": "K1",
+                "verified": true
+              },
+              {
+                "id": "B5",
+                "parent": "B4",
+                "cutoff": 85,
+                "minutes": 8,
+                "schema": "V1",
+                "key": "K1",
+                "verified": true
+              },
+              {
+                "id": "B6",
+                "parent": "B5",
+                "cutoff": 96,
+                "minutes": 3,
+                "schema": "V2",
+                "key": "K1",
+                "verified": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "RUNBOOK",
+          "status": "approved",
+          "data": {
+            "jobs": [
+              {
+                "id": "DNS",
+                "resource": "NET",
+                "minutes": 6,
+                "after": []
+              },
+              {
+                "id": "REPLAY",
+                "resource": "CPU",
+                "minutes": 7,
+                "after": [
+                  "RESTORE"
+                ]
+              },
+              {
+                "id": "INDEX",
+                "resource": "CPU",
+                "minutes": 10,
+                "after": [
+                  "REPLAY"
+                ]
+              },
+              {
+                "id": "CACHE",
+                "resource": "NET",
+                "minutes": 8,
+                "after": [
+                  "RESTORE",
+                  "DNS"
+                ]
+              },
+              {
+                "id": "VERIFY",
+                "resource": "CPU",
+                "minutes": 5,
+                "after": [
+                  "INDEX",
+                  "CACHE"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "BACKUP-SUMMARY",
+          "status": "superseded",
+          "data": {
+            "fastest_backup": "B6",
+            "key_K2": "available"
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "decision": "recover or infeasible",
+        "chain_ids": [
+          "ordered IDs"
+        ],
+        "rpo_minutes": "integer or null",
+        "finish_minutes": "integer or null",
+        "start_minutes": "dictionary of job integer starts",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [],
+      "selection": "recovery"
+    },
+    {
+      "id": "canary_segment_analysis",
+      "workflow": "Evaluate a canary under changing traffic mix",
+      "difficulty": "complex",
+      "documents": [
+        {
+          "id": "POLICY",
+          "status": "signed",
+          "data": {
+            "rules": "Compare control and canary with fixed RELEASE-POLICY weights, not their observed traffic proportions. Standardized error bps = sum(weight_bps * errors/requests) across segments. Keep exact fractions throughout; return standardized rates rounded to nearest integer bps half-up, and delta rounded separately from the exact difference. Project incremental errors = ceil(max(0,exact_delta_bps)*next_canary_requests/10000). Also report raw aggregate error bps for control and canary rounded half-up. Insufficient per-segment sample sizes require hold and missing_evidence listing those segment IDs. With complete samples, rollback if exact delta exceeds maximum_delta_bps, projected incremental errors exceed remaining budget, or any p95 exceeds maximum; otherwise promote. Equality passes. Observational telemetry does not prove root cause: confirmed_root_cause must be null. Do not use draft metrics."
+          }
+        },
+        {
+          "id": "RELEASE-POLICY",
+          "status": "signed",
+          "data": {
+            "weights_bps": {
+              "UM": 4000,
+              "UD": 1000,
+              "EM": 3000,
+              "ED": 2000
+            },
+            "maximum_delta_bps": 40,
+            "minimum_requests_per_segment": 1000,
+            "remaining_error_budget": 25,
+            "next_canary_requests": 4000,
+            "maximum_p95_ms": 300
+          }
+        },
+        {
+          "id": "METRICS",
+          "status": "final",
+          "data": {
+            "segments": [
+              {
+                "id": "UM",
+                "control_requests": 1000,
+                "control_errors": 20,
+                "canary_requests": 4000,
+                "canary_errors": 100,
+                "canary_p95_ms": 280
+              },
+              {
+                "id": "UD",
+                "control_requests": 4000,
+                "control_errors": 20,
+                "canary_requests": 1000,
+                "canary_errors": 10,
+                "canary_p95_ms": 240
+              },
+              {
+                "id": "EM",
+                "control_requests": 1000,
+                "control_errors": 30,
+                "canary_requests": 4000,
+                "canary_errors": 140,
+                "canary_p95_ms": 300
+              },
+              {
+                "id": "ED",
+                "control_requests": 4000,
+                "control_errors": 40,
+                "canary_requests": 1000,
+                "canary_errors": 15,
+                "canary_p95_ms": 250
+              }
+            ]
+          }
+        },
+        {
+          "id": "METRICS-DRAFT",
+          "status": "draft",
+          "data": {
+            "EM_canary_errors": 10,
+            "aggregate_canary_error_bps": 100
+          }
+        }
+      ],
+      "question": "Prepare the requested decision and its auditable calculations. Use only the supplied fictional rules. Choose supporting document IDs yourself: cite every authoritative document needed for the answer, excluding drafts, superseded records, and unrelated evidence. ID lists are unordered sets semantically but must be sorted lexicographically in the strict output contract. Do not invent missing facts. Money is integer USD dollars unless a field explicitly says cents; basis points are integers. Return null metrics and empty selections when the specified plan is infeasible.",
+      "schema": {
+        "decision": "promote, rollback, or hold",
+        "standardized_control_bps": "integer",
+        "standardized_canary_bps": "integer",
+        "delta_bps": "integer",
+        "raw_control_bps": "integer",
+        "raw_canary_bps": "integer",
+        "projected_incremental_errors": "integer",
+        "missing_evidence": [
+          "IDs"
+        ],
+        "confirmed_root_cause": "null",
+        "evidence_ids": [
+          "IDs"
+        ]
+      },
+      "uncertainty_fields": [
+        "missing_evidence",
+        "confirmed_root_cause"
+      ],
+      "selection": "canary"
+    }
+  ]
+}

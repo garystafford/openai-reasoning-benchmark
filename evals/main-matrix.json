@@ -1,0 +1,140 @@
+{
+  "version": "complex-main-v4",
+  "cases": [
+    {
+      "case_id": "decision/disruption_response",
+      "domain": "operations_planning",
+      "reasoning_mechanism": "Select a profitable fulfillment plan after a supplier delay while honoring reservations, quarantine, and shipment deadlines."
+    },
+    {
+      "case_id": "decision/diligence_reconciliation",
+      "domain": "financial_diligence",
+      "reasoning_mechanism": "Reconcile a target-company diligence pack and identify whether the financial test is enough to approve the transaction."
+    },
+    {
+      "case_id": "decision/incident_handoff",
+      "domain": "incident_response",
+      "reasoning_mechanism": "Prepare an evidence-based incident handoff and safe mitigation from conflicting telemetry and incomplete payment outcomes."
+    },
+    {
+      "case_id": "complex/sourcing_network",
+      "domain": "procurement",
+      "reasoning_mechanism": "Time-phased resilient procurement"
+    },
+    {
+      "case_id": "complex/liquidity_facilities",
+      "domain": "liquidity",
+      "reasoning_mechanism": "Reconcile liquidity and choose financing"
+    },
+    {
+      "case_id": "complex/transformation_roadmap",
+      "domain": "transformation",
+      "reasoning_mechanism": "Choose a dependency-aware transformation portfolio"
+    },
+    {
+      "case_id": "complex/engagement_capacity",
+      "domain": "engagement_delivery",
+      "reasoning_mechanism": "Staff a multi-week engagement under independence constraints"
+    },
+    {
+      "case_id": "complex/recovery_chain",
+      "domain": "disaster_recovery",
+      "reasoning_mechanism": "Choose a verified backup chain and recovery schedule"
+    },
+    {
+      "case_id": "complex/canary_segment_analysis",
+      "domain": "release_engineering",
+      "reasoning_mechanism": "Evaluate a canary under changing traffic mix"
+    },
+    {
+      "case_id": "reasoning/production_jobshop",
+      "domain": "operations_planning",
+      "reasoning_mechanism": "disjunctive_scheduling"
+    },
+    {
+      "case_id": "reasoning/warehouse_queue",
+      "domain": "operations_planning",
+      "reasoning_mechanism": "discrete_event_simulation"
+    },
+    {
+      "case_id": "reasoning/contingent_supplier",
+      "domain": "procurement",
+      "reasoning_mechanism": "minimax_regret"
+    },
+    {
+      "case_id": "reasoning/invoice_match",
+      "domain": "procurement",
+      "reasoning_mechanism": "relational_reconciliation"
+    },
+    {
+      "case_id": "reasoning/treasury_netting",
+      "domain": "liquidity",
+      "reasoning_mechanism": "directed_cash_netting"
+    },
+    {
+      "case_id": "reasoning/refinance_waterfall",
+      "domain": "liquidity",
+      "reasoning_mechanism": "piecewise_circular_financing"
+    },
+    {
+      "case_id": "reasoning/revenue_cohort_bridge",
+      "domain": "financial_diligence",
+      "reasoning_mechanism": "cohort_metric_reconstruction"
+    },
+    {
+      "case_id": "reasoning/cash_earnings_quality",
+      "domain": "financial_diligence",
+      "reasoning_mechanism": "earnings_cash_bridge"
+    },
+    {
+      "case_id": "reasoning/rollout_impact_estimate",
+      "domain": "transformation",
+      "reasoning_mechanism": "difference_in_differences"
+    },
+    {
+      "case_id": "reasoning/automation_routing",
+      "domain": "transformation",
+      "reasoning_mechanism": "expected_loss_routing"
+    },
+    {
+      "case_id": "reasoning/workpackage_assignment",
+      "domain": "engagement_delivery",
+      "reasoning_mechanism": "assignment_with_pairwise_costs"
+    },
+    {
+      "case_id": "reasoning/engagement_rescue",
+      "domain": "engagement_delivery",
+      "reasoning_mechanism": "incremental_decision_analysis"
+    },
+    {
+      "case_id": "reasoning/fault_hypothesis_constraints",
+      "domain": "incident_response",
+      "reasoning_mechanism": "constraint_based_diagnosis"
+    },
+    {
+      "case_id": "reasoning/lease_fencing_recovery",
+      "domain": "incident_response",
+      "reasoning_mechanism": "temporal_safety_invariants"
+    },
+    {
+      "case_id": "reasoning/consistent_restore_cut",
+      "domain": "disaster_recovery",
+      "reasoning_mechanism": "consistent_cut_search"
+    },
+    {
+      "case_id": "reasoning/regional_failover",
+      "domain": "disaster_recovery",
+      "reasoning_mechanism": "robust_capacity_design"
+    },
+    {
+      "case_id": "reasoning/expand_contract_rollout",
+      "domain": "release_engineering",
+      "reasoning_mechanism": "state_transition_planning"
+    },
+    {
+      "case_id": "reasoning/version_contract_resolution",
+      "domain": "release_engineering",
+      "reasoning_mechanism": "finite_constraint_satisfaction"
+    }
+  ]
+}

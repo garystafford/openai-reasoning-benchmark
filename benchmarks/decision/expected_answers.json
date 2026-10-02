@@ -1,0 +1,105 @@
+{
+  "version": 2,
+  "answers": {
+    "disruption_response": {
+      "selected_orders": [
+        "O1",
+        "O10",
+        "O3",
+        "O5",
+        "O6",
+        "O8"
+      ],
+      "selected_options": [
+        "S1",
+        "S3"
+      ],
+      "contribution_dollars": 1330,
+      "option_cost_dollars": 240,
+      "net_value_dollars": 1090,
+      "ending_available": {
+        "A": {
+          "X": 2,
+          "Y": 2
+        },
+        "B": {
+          "X": 1,
+          "Y": 0
+        }
+      },
+      "unfilled_optional_orders": [
+        "O12",
+        "O2",
+        "O4",
+        "O7",
+        "O9"
+      ],
+      "evidence_ids": [
+        "EXECUTION-RULES",
+        "HOLD-7",
+        "INV-FINAL",
+        "ORDER-REGISTER",
+        "RES-3",
+        "SUPPLIER-NOTICE",
+        "SUPPLY-OPTIONS"
+      ],
+      "missing_evidence": []
+    },
+    "diligence_reconciliation": {
+      "reported_ebitda_dollars": 10900000,
+      "allowed_capped_addbacks_dollars": 2775000,
+      "adjusted_ebitda_dollars": 13875000,
+      "net_debt_dollars": 44300000,
+      "leverage_headroom_dollars": 793750,
+      "leverage_compliant": true,
+      "enterprise_value_dollars": 111000000,
+      "equity_value_dollars": 66700000,
+      "applied_close_ids": [
+        "C1",
+        "C2"
+      ],
+      "concentration_pct": null,
+      "recommendation": "conditional_review",
+      "missing_evidence": [
+        "customer_revenue_schedule"
+      ],
+      "evidence_ids": [
+        "ADD-BACK-REGISTER",
+        "AUDIT-SCHEDULE",
+        "CLOSE-REGISTER",
+        "DEBT-CASH",
+        "DILIGENCE-CHECKLIST",
+        "LOAN-SIGNED",
+        "VALUATION-MANDATE"
+      ]
+    },
+    "incident_handoff": {
+      "unique_attempts": 14,
+      "rate_limited_attempts": 7,
+      "client_successes": 4,
+      "client_jobs": 7,
+      "consistent_hypotheses": [
+        "H2"
+      ],
+      "confirmed_root_cause": null,
+      "changed_key_jobs": [
+        "J5"
+      ],
+      "j5_action": "complete_lookup",
+      "reconciliation_payment_ids": [
+        "P-55"
+      ],
+      "mitigation_id": "M1",
+      "worst_case_attempts_per_minute": 12,
+      "evidence_ids": [
+        "CLIENT-RECEIPTS",
+        "CLOCKS",
+        "HYPOTHESIS-RULES",
+        "MITIGATION-OPTIONS",
+        "PAYMENT-LOOKUP",
+        "TRACE",
+        "VENDOR-CONTRACT"
+      ]
+    }
+  }
+}
