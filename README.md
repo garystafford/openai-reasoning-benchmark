@@ -1,6 +1,6 @@
 # OpenAI Reasoning Benchmark with Promptfoo
 
-Compare correctness, reasoning tokens, latency and estimated cost across GPT-6 Astra/Sol/Luna and GPT-5.6 Sol. Promptfoo runs and records evaluations.
+Compare correctness, reasoning tokens, latency and estimated cost across GPT-6 Astra/Sol/Luna. Promptfoo runs and records evaluations. Model choices and configurations are managed through environment variables and the `evals/models.json` catalog.
 
 **The main eval contains 27 distinct complex reasoning tasks: nine domains × three different tasks each.** This distribution contains only the 27 tasks used in the post.
 
