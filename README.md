@@ -96,6 +96,44 @@ outputs and grading metrics. Click the screenshot to view it at full resolution.
 
 ## Configure the matrix
 
+### Choose models
+
+[evals/models.json](evals/models.json) defines the available model catalog:
+
+- `models`: allowed model IDs and each model's supported `efforts`.
+- `defaultModels`: model IDs selected by `npm run eval` and `npm run eval:plan`
+  when neither `BENCHMARK_MODELS` nor `BENCHMARK_FAMILY` is set. Edit this list
+  to change those defaults; every ID must also exist in `models`.
+
+**`eval:matrix` and `eval:matrix:plan` default to the `gpt-6` family, rather
+than `defaultModels`.** They select every catalog ID beginning with `gpt-6-`,
+use all supported efforts, and default to three attempts per task. Changing
+`defaultModels` alone does not change this family-based selection.
+
+To choose models for a particular run, set `BENCHMARK_MODELS` to a
+comma-separated list of catalog IDs. Alternatively, use `BENCHMARK_FAMILY`
+(`gpt-6` or `gpt-5.6`) to select all catalog entries in that family. These two
+variables are mutually exclusive. `BENCHMARK_EFFORT` controls which supported
+reasoning efforts are included; unsupported model/effort pairs are skipped.
+
+```bash
+# Preview a matrix containing only Sol and Luna, without making API calls.
+BENCHMARK_MODELS=gpt-6-sol,gpt-6-luna npm run eval:matrix:plan
+
+# Run the same selection with three attempts per task and all supported efforts.
+BENCHMARK_MODELS=gpt-6-sol,gpt-6-luna npm run eval:matrix -- --env-file .env.local
+
+# Preview every GPT-5.6 model currently listed in the catalog.
+BENCHMARK_FAMILY=gpt-5.6 npm run eval:matrix:plan
+```
+
+Keep the catalog as valid JSON; use selection variables to omit a model from a
+run. When adding a new model, also add its cost rates in
+[evals/pricing.cjs](evals/pricing.cjs). The catalog's `asOf` and `source` fields
+record metadata; they do not select models or automatically refresh the catalog.
+
+### Matrix settings
+
 The defaults in this table are for `eval`. The `eval:matrix` overrides are
 described above; selecting a family defaults to all supported efforts.
 
@@ -118,7 +156,8 @@ truncate an otherwise correct answer. Unsupported model/effort pairs are skipped
 and listed in the preview; an entirely unsupported selection fails before calls.
 `BENCHMARK_EFFORT=all` includes the `none` baseline and produces 17 compatible
 pairs for the default GPT-6 models, or **459 requests** across 27 distinct complex tasks.
-Selecting all six models produces 35 compatible pairs (945 requests).
+Selecting all four catalog models with all supported efforts produces 23
+compatible pairs (621 requests per attempt across the 27 tasks).
 Use `BENCHMARK_MODELS` to select optional GPT-5.6 baselines; keep the model catalog
 as valid JSON rather than commenting out entries.
 
